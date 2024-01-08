@@ -18,6 +18,15 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ImageFunctions.h" />
+    <ClInclude Include="Pixel.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ImageFunction.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Pixel.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
