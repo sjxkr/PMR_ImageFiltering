@@ -2,8 +2,8 @@
 /* Pixel class declaration.                                       */
 /* File name: pixel.h                                             */
 /* This class implements the concept of a pixel                   */
-//#ifndef PIXEL_H
-//#define PIXEL_H
+#ifndef PIXEL_H
+#define PIXEL_H
 #include <iostream> //Required for istream, ostream
 using namespace std;
 
@@ -60,5 +60,5 @@ class Pixel
 	unsigned int red, green, blue;
 	unsigned short overflowFlag;
 };
-//#endif
+#endif
 /*----------------------------------------------------------------*/
