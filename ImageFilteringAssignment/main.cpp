@@ -18,19 +18,18 @@ using namespace std;
 
 int main()
 {
-	//testing opening of files
-	ifstream fin;
-	ofstream fout;
-	char inputFilename[] = "input.txt";
+	//Declerations
+	ifstream fin;	//input file
+	ofstream fout;	//output file
+	char inputFilename[] = "placeholderfilename.txt";	//intialised char array
+	int Info[] = { 0,0,0 }; // used in read header function
+	vector<vector<Pixel>> image;	// Pixel data of input image
+
+	cout << Info[0] << endl;	//debugging
+	cout << inputFilename << endl;	//debugging
 
 	openIOFiles(fin, fout, inputFilename);		//Open input and output file
-
-	// read from input and copy to output
-	vector<vector<Pixel>> image;
-	int w = 320;
-	int h = 200;
-
-	readAndWriteImageData(fin, fout, image, w, h);
+	convertP6ToP3(fin, fout, image, Info);
 
 	return(0);
 }
