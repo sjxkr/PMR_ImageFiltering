@@ -18,5 +18,19 @@ using namespace std;
 
 int main()
 {
+	//testing opening of files
+	ifstream fin;
+	ofstream fout;
+	char inputFilename[] = "input.txt";
+
+	openIOFiles(fin, fout, inputFilename);		//Open input and output file
+
+	// read from input and copy to output
+	vector<vector<Pixel>> image;
+	int w = 320;
+	int h = 200;
+
+	readAndWriteImageData(fin, fout, image, w, h);
+
 	return(0);
 }
