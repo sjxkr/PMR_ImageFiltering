@@ -42,12 +42,24 @@ int main()
 	cout << "The image width is " << w << endl;
 
 	Pixel first;
+	Pixel sum;
+	Pixel product;
 	int i = 0;
-	int j = 1;
+	int j = 0;
 
 	first = image[i][j];
 
 	cout << "The selected pixel colour is " << first << endl;
+
+	/* Testing Overloaded operators multiplication and addition */
+	product = image[i][j] * 9;	
+
+	cout << "The product is equal to " << product << endl;
+
+	sum = image[i][j] + image[i][j + 1];
+
+	cout << "The sum of " << image[i][j] << " and " << image[i][j + 1] << " is " << sum << endl;
+
 
 	return(0);
 }
