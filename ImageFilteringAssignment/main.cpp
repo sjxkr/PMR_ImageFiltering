@@ -66,7 +66,7 @@ int main()
 
 	// initialise filter kernel with values
 	
-	
+	/*
 	for (int k = 0; k < 3; k++)
 	{
 		for (int l = 0; l < 3; l++)
@@ -87,7 +87,42 @@ int main()
 	sum = image[i][j] + image[i][j + 1];
 
 	cout << "The sum of " << image[i][j] << " and " << image[i][j + 1] << " is " << sum << endl;
-	
+	*/
+
+	//Testing pixel data accessor
+
+	unsigned red;
+	unsigned green;
+	unsigned blue;
+	int iRed;
+	int iGreen;
+	int iBlue;
+	unsigned r;
+	unsigned g;
+	unsigned b;
+
+	//get values
+	red = first.getRed();
+	green = first.getGreen();
+	blue = first.getBlue();
+
+	//print values
+	cout << "Red pixel is " << red << endl;
+	cout << "Green pixel is " << green << endl;
+	cout << "Blue pixel is " << blue << endl;
+
+	r = red * 2;
+	g = green * 2;
+	b = blue * 2;
+	cout << "iRed is equals to " << r << endl;
+	cout << "iGreen is equals to " << g << endl;
+	cout << "iBlue is equal to " << b << endl;
+
+	//set new pixel values
+	first.setPixel(r, g, b);
+
+	cout << "New pixel is " << first << endl;
+
 
 	return(0);
 }
