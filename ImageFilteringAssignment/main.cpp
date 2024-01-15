@@ -25,11 +25,25 @@ int main()
 	int Info[] = { 0,0,0 }; // used in read header function
 	vector<vector<Pixel>> image;	// Pixel data of input image
 
-	cout << Info[0] << endl;	//debugging
-	cout << inputFilename << endl;	//debugging
 
 	openIOFiles(fin, fout, inputFilename);		//Open input and output file
 	convertP6ToP3(fin, fout, image, Info);
+	closeIOFiles(fin, fout);
+	openIOFiles(fin, fout, inputFilename);
+	smooth(image);
+	writeHeader;
+	writeP3Image;
+	closeIOFiles(fin, fout);
+	openIOFiles(fin, fout, inputFilename);
+	sharpen(image);
+	writeHeader;
+	writeP3Image;
+	closeIOFiles(fin, fout);
+	openIOFiles(fin, fout, inputFilename);
+	edgeDetection(image);
+	writeHeader;
+	writeP3Image;
+	closeIOFiles(fin, fout);
 
 	return(0);
 }

@@ -35,6 +35,11 @@ void openIOFiles(ifstream& fin, ofstream& fout, char inputFilename[])
 	}
 }
 
+void closeIOFiles(ifstream& fin, ofstream& fout)
+{
+	/* Enter Code Here */
+}
+
 void convertP6ToP3(ifstream& bin, ofstream& out, vector<vector<Pixel> >& image, int info[1])
 {
 	readHeader(bin, out, info);
