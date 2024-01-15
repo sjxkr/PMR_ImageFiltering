@@ -58,6 +58,20 @@ void smooth(vector<vector<Pixel> >& image)
 		}
 }
 
+void sharpen(vector<vector<Pixel> >& image)
+{
+	/* Enter Code Here */
+
+}
+
+void edgeDetection(vector<vector<Pixel> >& image)
+{
+	/* Enter Code Here*/
+
+}
+
+
+
 void writeP3Image(ofstream& out, vector<vector<Pixel> >& image, char comment[], int maxColor)
 {
 	int h, w, pCount(0);
