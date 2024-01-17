@@ -59,7 +59,13 @@ void smooth(vector<vector<Pixel> >& image)
 	ofstream out;
 	char outFilename[MAXLEN];
 	char comment[MAXLEN] = "# Smooth filter has been applied this image";
-	int maxColor = 255;
+	int maxColor = 255; // change this to be read from header, imageinfo variable.
+	
+	vector<vector<int>> filter{
+		{-1, -1, -1},
+		{-1,  9, -1},
+		{-1, -1, -1}
+	};
 
 	// open file for filtered image data
 
@@ -72,28 +78,82 @@ void smooth(vector<vector<Pixel> >& image)
 
 	// try to open the file
 	try {
+		if (!out) {
+			throw runtime_error("Could not create file!");
+		}
 		out.open(outFilename);
 	}
 	catch (exception e) {
-		cout << "Error opening file" << endl;
+		// handle the exception
+		cout << "Error opening out file" << endl;
 	}
 
 	// apply smoothing filter
-	for (int i = 1; i < h - 1; i++)
-		for (int j = 1; j < w - 1; j++)
+	for (int i=1; i<h-1; i++)
+		for (int j=1; j<w-1; j++)
 		{
 			if (!pixelEdgeRowColCheck(image, i, j))
 			{
-				// run this on eligible pixels
-				image[i][j].setPixel(255, 255, 255);	//make all inner pixels white
+				// local declarations
+				int r, g, b;
+				vector<int> redVector, greenVector, blueVector;
+				int redSum = 0, greenSum = 0, blueSum = 0;
+				Pixel singleProduct; // not used
+				vector<Pixel> productVector; //not used
+				Pixel currentPixel;
+
+				// create product vectors of rgb values
+				for (int k=-1; k<2; k++)
+					for (int l=-1; l<2; l++)
+					{
+						redVector.push_back(image[i+k][j+l].getRed() * filter[k][l]);
+						greenVector.push_back(image[i+k][j+l].getGreen() * filter[k][l]);
+						blueVector.push_back(image[i+k][j+l].getBlue() * filter[k][l]);
+					}
+
+				// sum the products
+				for (int n = 0; n < 9; n++)
+				{
+					redSum += redVector[n];
+					greenSum += greenVector[n];
+					blueSum += blueVector[n];
+				}
+
+				// validate rgb values
+
+				if (redSum < 0)
+				{
+					r = 0;
+				}
+
+				if (greenSum < 0)
+				{
+					g = 0;
+				}
+
+				if (blueSum < 0)
+				{
+					b = 0;
+				}
+
+				// set current pixel value
+				currentPixel.setPixel(r, g, b);
+
+				// check for overlow and reset
+				if (currentPixel.overflow())
+				{
+					currentPixel.reset();
+				}
+
+				//image[i][j].setPixel(255, 255, 255);	//make all inner pixels white
 			}			
 		}
 
-
+	
 	// write image data to file
 	writeP3Image(out, image, comment, maxColor);
 
-
+	/*
 	// sum pixel values
 	Pixel sum;
 	for (int i=1; i<h-1; i++)
@@ -103,6 +163,7 @@ void smooth(vector<vector<Pixel> >& image)
 			sum = sum / 4;
 			image[i][j] = sum;
 		}
+	*/
 }
 
 void sharpen(vector<vector<Pixel> >& image)
