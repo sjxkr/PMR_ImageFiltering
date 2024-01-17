@@ -77,7 +77,24 @@ void edgeDetection(vector<vector<Pixel> >& image)
 
 }
 
+bool pixelEdgeRowColCheck(vector<vector<Pixel>>& image, int i, int j)
+{
+	// check if pixel is in first or last row or column
 
+	// define input variables
+	bool edge = false;
+	int h = image.size();
+	int w = image[0].size();
+
+	if ((i || j == 0) || (i == h - 1) || (j == w - 1))
+	{
+		edge = true;
+		return(edge);
+	}
+
+	edge = false;
+	return(edge);
+}
 
 void writeP3Image(ofstream& out, vector<vector<Pixel> >& image, char comment[], int maxColor)
 {
