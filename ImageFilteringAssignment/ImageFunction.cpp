@@ -94,6 +94,7 @@ void smooth(vector<vector<Pixel> >& image)
 		{
 			if (!pixelEdgeRowColCheck(image, i, j))
 			{
+				cout << "first line of the pixel edge check" << endl;
 				// local declarations
 				int r, g, b;
 				vector<int> redVector, greenVector, blueVector;
@@ -102,6 +103,7 @@ void smooth(vector<vector<Pixel> >& image)
 				vector<Pixel> productVector; //not used
 				Pixel currentPixel;
 
+			
 				// create product vectors of rgb values
 				for (int k=-1; k<2; k++)
 					for (int l=-1; l<2; l++)
@@ -149,7 +151,7 @@ void smooth(vector<vector<Pixel> >& image)
 			}			
 		}
 
-	
+	cout << "just before write image" << endl;
 	// write image data to file
 	writeP3Image(out, image, comment, maxColor);
 
