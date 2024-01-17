@@ -108,9 +108,9 @@ void smooth(vector<vector<Pixel> >& image)
 				for (int k=-1; k<2; k++)
 					for (int l=-1; l<2; l++)
 					{
-						redVector.push_back(image[i+k][j+l].getRed() * filter[k][l]);
-						greenVector.push_back(image[i+k][j+l].getGreen() * filter[k][l]);
-						blueVector.push_back(image[i+k][j+l].getBlue() * filter[k][l]);
+						redVector.push_back(image[i][j].getRed() * filter[k][l]);
+						greenVector.push_back(image[i][j].getGreen() * filter[k][l]);
+						blueVector.push_back(image[i][j].getBlue() * filter[k][l]);
 					}
 
 				// sum the products
