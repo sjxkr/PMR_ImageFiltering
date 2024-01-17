@@ -24,25 +24,9 @@ int main()
 	char inputFilename[] = "placeholderfilename.txt";	//intialised char array
 	int Info[] = { 0,0,0 }; // used in read header function
 	vector<vector<Pixel>> image;	// Pixel data of input image
-	int i = 154;
-	int j = 300;
-	bool success;	// variable used to progress program
 
 	openIOFiles(fin, fout, inputFilename);		//Open input and output file
 	convertP6ToP3(fin, fout, image, Info);
-	
-	success = pixelEdgeRowColCheck(image, i, j);
-
-	if (success)
-	{
-		cout << "Pixel is on edge" << endl;
-	}
-	else
-	{
-		cout << "Pixel is not on edge" << endl;
-	}
-
-	/*
 	closeIOFiles(fin, fout);
 	openIOFiles(fin, fout, inputFilename);
 	smooth(image);
@@ -59,7 +43,6 @@ int main()
 	writeHeader;
 	writeP3Image;
 	closeIOFiles(fin, fout);
-	*/
 
 	return(0);
 }
