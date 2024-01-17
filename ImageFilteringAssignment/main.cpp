@@ -24,15 +24,16 @@ int main()
 	char inputFilename[] = "placeholderfilename.txt";	//intialised char array
 	int Info[] = { 0,0,0 }; // used in read header function
 	vector<vector<Pixel>> image;	// Pixel data of input image
-
+	int i = 154;
+	int j = 300;
+	bool success;	// variable used to progress program
 
 	openIOFiles(fin, fout, inputFilename);		//Open input and output file
 	convertP6ToP3(fin, fout, image, Info);
 	
-	int i = image.size();
-	int j = image[0].size();
+	success = pixelEdgeRowColCheck(image, i, j);
 
-	if (pixelEdgeRowColCheck(image, i, j))
+	if (success)
 	{
 		cout << "Pixel is on edge" << endl;
 	}
