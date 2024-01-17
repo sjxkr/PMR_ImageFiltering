@@ -28,6 +28,20 @@ int main()
 
 	openIOFiles(fin, fout, inputFilename);		//Open input and output file
 	convertP6ToP3(fin, fout, image, Info);
+	
+	int i = image.size();
+	int j = image[0].size();
+
+	if (pixelEdgeRowColCheck(image, i, j))
+	{
+		cout << "Pixel is on edge" << endl;
+	}
+	else
+	{
+		cout << "Pixel is not on edge" << endl;
+	}
+
+	/*
 	closeIOFiles(fin, fout);
 	openIOFiles(fin, fout, inputFilename);
 	smooth(image);
@@ -44,6 +58,7 @@ int main()
 	writeHeader;
 	writeP3Image;
 	closeIOFiles(fin, fout);
+	*/
 
 	return(0);
 }
