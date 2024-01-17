@@ -52,9 +52,49 @@ void convertP6ToP3(ifstream& bin, ofstream& out, vector<vector<Pixel> >& image, 
 
 void smooth(vector<vector<Pixel> >& image)
 {
+
+	// define variables
 	int h = image.size();
 	int w = image[0].size();
+	ofstream out;
+	char outFilename[MAXLEN];
+	char comment[MAXLEN] = "# Smooth filter has been applied this image";
+	int maxColor = 255;
 
+	// open file for filtered image data
+
+	// prompt user for filename
+	cout << "enter filename for filtered image:" << endl;
+	cin >> outFilename;
+
+	// add suffix and file extension
+	strcat(outFilename, "P3_sm.ppm");
+
+	// try to open the file
+	try {
+		out.open(outFilename);
+	}
+	catch (exception e) {
+		cout << "Error opening file" << endl;
+	}
+
+	// apply smoothing filter
+	for (int i = 1; i < h - 1; i++)
+		for (int j = 1; j < w - 1; j++)
+		{
+			if (!pixelEdgeRowColCheck(image, i, j))
+			{
+				// run this on eligible pixels
+				image[i][j].setPixel(255, 255, 255);	//make all inner pixels white
+			}			
+		}
+
+
+	// write image data to file
+	writeP3Image(out, image, comment, maxColor);
+
+
+	// sum pixel values
 	Pixel sum;
 	for (int i=1; i<h-1; i++)
 		for (int j = 1; j < w - 1; j++)
@@ -104,6 +144,7 @@ void writeP3Image(ofstream& out, vector<vector<Pixel> >& image, char comment[], 
 	w = (int)image[0].size();
 
 	writeHeader(out, magicNumber, comment, w, h, maxColor);
+
 	for (int i = 0; i < h; i++) {
 		for (int j = 0; j < w; j++)
 		{

@@ -28,8 +28,9 @@ int main()
 	openIOFiles(fin, fout, inputFilename);		//Open input and output file
 	convertP6ToP3(fin, fout, image, Info);
 	closeIOFiles(fin, fout);
-	openIOFiles(fin, fout, inputFilename);
 	smooth(image);
+
+	/*
 	writeHeader;
 	writeP3Image;
 	closeIOFiles(fin, fout);
@@ -43,6 +44,7 @@ int main()
 	writeHeader;
 	writeP3Image;
 	closeIOFiles(fin, fout);
+	*/
 
 	return(0);
 }
