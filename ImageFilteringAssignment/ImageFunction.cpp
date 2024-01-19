@@ -114,10 +114,13 @@ void smooth(vector<vector<Pixel> >& image)
 						blueSumProduct += image[i + k][j + l].getBlue() * filter[k + 1][l + 1];
 
 						// set new pixel rgb value
-						image[i + k][j + l].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
+						image[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
 
 						// validate pixel
+						image[i][j].overflow();
 
+						// reset pixel
+						image[i][j].reset();
 												
 					}
 
