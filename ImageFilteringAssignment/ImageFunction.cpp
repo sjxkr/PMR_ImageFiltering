@@ -94,10 +94,10 @@ void smooth(vector<vector<Pixel> >& image)
 		{
 			if (!pixelEdgeRowColCheck(image, i, j))
 			{
-				cout << "first line of the pixel edge check" << endl;
+				
 				// local declarations
 				int r, g, b;
-				vector<int> redVector, greenVector, blueVector;
+				vector<int> redVector, greenVector, blueVector; // not used
 				int redSumProduct = 0, greenSumProduct = 0, blueSumProduct = 0;
 				Pixel singleProduct; // not used
 				vector<Pixel> productVector; //not used
@@ -112,12 +112,13 @@ void smooth(vector<vector<Pixel> >& image)
 						redSumProduct += image[i + k][j + l].getRed() * filter[k + 1][l + 1];
 						greenSumProduct += image[i + k][j + l].getGreen() * filter[k + 1][l + 1];
 						blueSumProduct += image[i + k][j + l].getBlue() * filter[k + 1][l + 1];
+
+						// set new pixel rgb value
+						image[i + k][j + l].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
+
+						// validate pixel
+
 												
-						/*
-						redVector.push_back(image[i][j].getRed() * filter[k][l]);
-						greenVector.push_back(image[i][j].getGreen() * filter[k][l]);
-						blueVector.push_back(image[i][j].getBlue() * filter[k][l]);
-						*/
 					}
 
 				/*
@@ -161,7 +162,7 @@ void smooth(vector<vector<Pixel> >& image)
 			}			
 		}
 
-	cout << "just before write image" << endl;
+	
 	// write image data to file
 	writeP3Image(out, image, comment, maxColor);
 
