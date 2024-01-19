@@ -105,24 +105,27 @@ void smooth(vector<vector<Pixel> >& image)
 
 			
 				// create product vectors of rgb values
-				for (int k=-1; k<2; k++)
-					for (int l=-1; l<2; l++)
+				for (int k = -1; k < 2; k++)
+				{
+					for (int l = -1; l < 2; l++)
 					{
 						// compute sum product
 						redSumProduct += image[i + k][j + l].getRed() * filter[k + 1][l + 1];
 						greenSumProduct += image[i + k][j + l].getGreen() * filter[k + 1][l + 1];
 						blueSumProduct += image[i + k][j + l].getBlue() * filter[k + 1][l + 1];
 
-						// set new pixel rgb value
-						image[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
 
-						// validate pixel
-						image[i][j].overflow();
-
-						// reset pixel
-						image[i][j].reset();
-												
 					}
+
+					// set new pixel rgb value
+					image[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
+
+					// validate pixel
+					image[i][j].overflow();
+
+					// reset pixel
+					image[i][j].reset();
+				}
 
 				/*
 				// sum the products
