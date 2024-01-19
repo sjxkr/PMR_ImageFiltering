@@ -116,55 +116,16 @@ void smooth(vector<vector<Pixel> >& image)
 
 
 					}
-
-					// set new pixel rgb value
-					image[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
-
-					// validate pixel
-					image[i][j].overflow();
-
-					// reset pixel
-					image[i][j].reset();
-				}
-
-				/*
-				// sum the products
-				for (int n = 0; n < 9; n++)
-				{
-					redSum += redVector[n];
-					greenSum += greenVector[n];
-					blueSum += blueVector[n];
 				}
 				
+				// set new pixel rgb value
+				image[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
 
-				// validate rgb values
+				// validate pixel
+				image[i][j].overflow();
 
-				if (redSum < 0)
-				{
-					r = 0;
-				}
-
-				if (greenSum < 0)
-				{
-					g = 0;
-				}
-
-				if (blueSum < 0)
-				{
-					b = 0;
-				}
-
-				// set current pixel value
-				currentPixel.setPixel(r, g, b);
-
-				// check for overlow and reset
-				if (currentPixel.overflow())
-				{
-					currentPixel.reset();
-				}
-
-				//image[i][j].setPixel(255, 255, 255);	//make all inner pixels white
-				*/
+				// reset pixel
+				image[i][j].reset();
 			}			
 		}
 
