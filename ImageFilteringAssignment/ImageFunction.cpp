@@ -114,21 +114,23 @@ void smooth(vector<vector<Pixel> >& image)
 						greenSumProduct += image[i + k][j + l].getGreen() * filter[k + 1][l + 1];
 						blueSumProduct += image[i + k][j + l].getBlue() * filter[k + 1][l + 1];
 
-						// deal with negative values
-						if (redSumProduct < 0) {
-							redSumProduct = 0;
-						}
 
-						if (greenSumProduct < 0) {
-							greenSumProduct = 0;
-						}
-
-						if (blueSumProduct < 0) {
-							blueSumProduct = 0;
-						}
 					}
 				}
 				
+				// deal with negative values
+				if (redSumProduct < 0) {
+					redSumProduct = 0;
+				}
+
+				if (greenSumProduct < 0) {
+					greenSumProduct = 0;
+				}
+
+				if (blueSumProduct < 0) {
+					blueSumProduct = 0;
+				}
+
 				// set new pixel rgb value
 				image[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
 
