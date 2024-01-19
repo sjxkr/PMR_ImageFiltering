@@ -28,14 +28,14 @@ int main()
 	openIOFiles(fin, fout, inputFilename);		//Open input and output file
 	convertP6ToP3(fin, fout, image, Info);
 	closeIOFiles(fin, fout);
-	smooth(image);
+	sharpen(image);
 
 	/*
 	writeHeader;
 	writeP3Image;
 	closeIOFiles(fin, fout);
 	openIOFiles(fin, fout, inputFilename);
-	sharpen(image);
+	smooth(image);
 	writeHeader;
 	writeP3Image;
 	closeIOFiles(fin, fout);
