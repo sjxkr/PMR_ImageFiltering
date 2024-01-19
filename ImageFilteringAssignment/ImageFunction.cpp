@@ -92,17 +92,13 @@ void sharpen(vector<vector<Pixel> >& image)
 	for (int i=1; i<h-1; i++)
 		for (int j=1; j<w-1; j++)
 		{
+			// check pixel is not on edge
 			if (!pixelEdgeRowColCheck(image, i, j))
 			{
 				
 				// local declarations
 				int r, g, b;
-				vector<int> redVector, greenVector, blueVector; // not used
 				int redSumProduct = 0, greenSumProduct = 0, blueSumProduct = 0;
-				Pixel singleProduct; // not used
-				vector<Pixel> productVector; //not used
-				Pixel currentPixel; // not used
-
 			
 				// create product vectors of rgb values
 				for (int k = -1; k < 2; k++)
@@ -134,15 +130,15 @@ void sharpen(vector<vector<Pixel> >& image)
 					blueSumProduct = 0;
 				}
 
+				// handle any pixel overflow
+				if (image[i][j].overflow())
+				{
+					image[i][j].reset();
+				}
 
 				// set new pixel rgb value
 				image[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
 
-				// handle any pixel overflow
-				if (image[i][j].overflow()) 
-				{
-					image[i][j].reset();
-				}
 			}			
 		}
 
