@@ -58,7 +58,7 @@ void sharpen(vector<vector<Pixel> >& image)
 	int w = image[0].size();
 	ofstream out;
 	char outFilename[MAXLEN];
-	char comment[MAXLEN] = "# Smooth filter has been applied this image";
+	char comment[MAXLEN] = "# Sharpen filter has been applied this image";
 	int maxColor = 255; // change this to be read from header, imageinfo variable.
 	
 	vector<vector<int>> filter{
@@ -74,7 +74,7 @@ void sharpen(vector<vector<Pixel> >& image)
 	cin >> outFilename;
 
 	// add suffix and file extension
-	strcat(outFilename, "P3_sm.ppm");
+	strcat(outFilename, "P3_sh.ppm");
 
 	// try to open the file
 	try {
