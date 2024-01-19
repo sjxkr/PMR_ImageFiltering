@@ -50,7 +50,7 @@ void convertP6ToP3(ifstream& bin, ofstream& out, vector<vector<Pixel> >& image, 
 }
 
 
-void smooth(vector<vector<Pixel> >& image)
+void sharpen(vector<vector<Pixel> >& image)
 {
 
 	// define variables
@@ -146,23 +146,23 @@ void smooth(vector<vector<Pixel> >& image)
 	// write image data to file
 	writeP3Image(out, image, comment, maxColor);
 
-	/*
+}
+
+void smooth(vector<vector<Pixel> >& image)
+{
+	// define variables
+	int h = image.size();
+	int w = image[0].size();
+
 	// sum pixel values
 	Pixel sum;
-	for (int i=1; i<h-1; i++)
+	for (int i = 1; i < h - 1; i++)
 		for (int j = 1; j < w - 1; j++)
 		{
 			sum = image[i + 1][j] + image[i - 1][j] + image[i][j + 1] + image[i][j - 1];
 			sum = sum / 4;
 			image[i][j] = sum;
 		}
-	*/
-}
-
-void sharpen(vector<vector<Pixel> >& image)
-{
-	/* Enter Code Here */
-
 }
 
 void edgeDetection(vector<vector<Pixel> >& image)
