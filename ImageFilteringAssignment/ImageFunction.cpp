@@ -88,7 +88,7 @@ void sharpen(vector<vector<Pixel> >& image)
 		cout << "Error opening out file" << endl;
 	}
 
-	// apply smoothing filter
+	// apply sharpen filter
 	for (int i=1; i<h-1; i++)
 		for (int j=1; j<w-1; j++)
 		{
@@ -119,26 +119,30 @@ void sharpen(vector<vector<Pixel> >& image)
 				}
 				
 				// deal with negative values
-				if (redSumProduct < 0) {
+				if (redSumProduct < 0) 
+				{
 					redSumProduct = 0;
 				}
 
-				if (greenSumProduct < 0) {
+				if (greenSumProduct < 0) 
+				{
 					greenSumProduct = 0;
 				}
 
-				if (blueSumProduct < 0) {
+				if (blueSumProduct < 0) 
+				{
 					blueSumProduct = 0;
 				}
+
 
 				// set new pixel rgb value
 				image[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
 
-				// validate pixel
-				image[i][j].overflow();
-
-				// reset pixel
-				image[i][j].reset();
+				// handle any pixel overflow
+				if (image[i][j].overflow()) 
+				{
+					image[i][j].reset();
+				}
 			}			
 		}
 
