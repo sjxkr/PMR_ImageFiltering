@@ -98,21 +98,29 @@ void smooth(vector<vector<Pixel> >& image)
 				// local declarations
 				int r, g, b;
 				vector<int> redVector, greenVector, blueVector;
-				int redSum = 0, greenSum = 0, blueSum = 0;
+				int redSumProduct = 0, greenSumProduct = 0, blueSumProduct = 0;
 				Pixel singleProduct; // not used
 				vector<Pixel> productVector; //not used
-				Pixel currentPixel;
+				Pixel currentPixel; // not used
 
 			
 				// create product vectors of rgb values
 				for (int k=-1; k<2; k++)
 					for (int l=-1; l<2; l++)
 					{
+						// compute sum product
+						redSumProduct += image[i + k][j + l].getRed() * filter[k + 1][l + 1];
+						greenSumProduct += image[i + k][j + l].getGreen() * filter[k + 1][l + 1];
+						blueSumProduct += image[i + k][j + l].getBlue() * filter[k + 1][l + 1];
+												
+						/*
 						redVector.push_back(image[i][j].getRed() * filter[k][l]);
 						greenVector.push_back(image[i][j].getGreen() * filter[k][l]);
 						blueVector.push_back(image[i][j].getBlue() * filter[k][l]);
+						*/
 					}
 
+				/*
 				// sum the products
 				for (int n = 0; n < 9; n++)
 				{
@@ -120,6 +128,7 @@ void smooth(vector<vector<Pixel> >& image)
 					greenSum += greenVector[n];
 					blueSum += blueVector[n];
 				}
+				
 
 				// validate rgb values
 
@@ -148,6 +157,7 @@ void smooth(vector<vector<Pixel> >& image)
 				}
 
 				//image[i][j].setPixel(255, 255, 255);	//make all inner pixels white
+				*/
 			}			
 		}
 
