@@ -131,19 +131,9 @@ void sharpen(vector<vector<Pixel> >& image)
 				}
 
 				// handle any pixel overflow
-				if (redSumProduct > 255)
+				if (image[i][j].overflow())
 				{
-					redSumProduct = 255;
-				}
-
-				if (greenSumProduct >255)
-				{
-					greenSumProduct = 255;
-				}
-
-				if (blueSumProduct >255)
-				{
-					blueSumProduct = 255;
+					image[i][j].reset();
 				}
 
 				// set new pixel rgb value
