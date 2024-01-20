@@ -61,6 +61,7 @@ void sharpen(vector<vector<Pixel> >& image)
 	char comment[MAXLEN] = "# Sharpen filter has been applied this image";
 	int maxColor = 255; // change this to be read from header, imageinfo variable.
 	
+	// initialise convolution matrix
 	vector<vector<int>> filter{
 		{-1, -1, -1},
 		{-1,  9, -1},
@@ -83,8 +84,8 @@ void sharpen(vector<vector<Pixel> >& image)
 		}
 		out.open(outFilename);
 	}
+	// handle the exception
 	catch (exception e) {
-		// handle the exception
 		cout << "Error opening out file" << endl;
 	}
 
@@ -100,17 +101,15 @@ void sharpen(vector<vector<Pixel> >& image)
 				int r, g, b;
 				int redSumProduct = 0, greenSumProduct = 0, blueSumProduct = 0;
 			
-				// create product vectors of rgb values
+				// pass kernel over pixels
 				for (int k = -1; k < 2; k++)
 				{
 					for (int l = -1; l < 2; l++)
 					{
-						// compute sum product
+						// compute rgb sum product
 						redSumProduct += image[i + k][j + l].getRed() * filter[k + 1][l + 1];
 						greenSumProduct += image[i + k][j + l].getGreen() * filter[k + 1][l + 1];
 						blueSumProduct += image[i + k][j + l].getBlue() * filter[k + 1][l + 1];
-
-
 					}
 				}
 				
@@ -130,12 +129,15 @@ void sharpen(vector<vector<Pixel> >& image)
 					blueSumProduct = 0;
 				}
 
+				// check for overflow & reset
+				if (image[i][j].overflow())
+					image[i][j].reset();
+
 				// set new pixel rgb value
 				image[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
 
 			}			
 		}
-
 	
 	// write image data to file
 	writeP3Image(out, image, comment, maxColor);
