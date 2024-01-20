@@ -99,7 +99,6 @@ void sharpen(vector<vector<Pixel> >& image)
 			{
 				
 				// local declarations
-				int r, g, b;
 				int redSumProduct = 0, greenSumProduct = 0, blueSumProduct = 0;
 			
 				// pass kernel over pixels
@@ -131,7 +130,7 @@ void sharpen(vector<vector<Pixel> >& image)
 				}
 
 				// set new pixel rgb value
-				imageOut[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
+				&imageOut[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
 
 				// check for overflow & reset
 				if (imageOut[i][j].overflow())
