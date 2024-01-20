@@ -60,7 +60,7 @@ void sharpen(vector<vector<Pixel> >& image)
 	char outFilename[MAXLEN];
 	char comment[MAXLEN] = "# Sharpen filter has been applied this image";
 	int maxColor = 255; // change this to be read from header, imageinfo variable.
-	vector<vector<Pixel>> imageOut;		// output image
+	vector<vector<Pixel>> imageOut = image;		// output image intialised as input image
 	
 	// initialise convolution matrix
 	vector<vector<int>> filter{
