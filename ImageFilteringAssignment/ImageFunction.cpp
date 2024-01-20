@@ -130,12 +130,12 @@ void sharpen(vector<vector<Pixel> >& image)
 					blueSumProduct = 0;
 				}
 
+				// set new pixel rgb value
+				imageOut[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
+
 				// check for overflow & reset
 				if (imageOut[i][j].overflow())
 					imageOut[i][j].reset();
-
-				// set new pixel rgb value
-				imageOut[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
 
 			}			
 		}
