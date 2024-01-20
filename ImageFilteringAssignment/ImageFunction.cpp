@@ -60,6 +60,7 @@ void sharpen(vector<vector<Pixel> >& image)
 	char outFilename[MAXLEN];
 	char comment[MAXLEN] = "# Sharpen filter has been applied this image";
 	int maxColor = 255; // change this to be read from header, imageinfo variable.
+	vector<vector<Pixel>> imageOut;		// output image
 	
 	// initialise convolution matrix
 	vector<vector<int>> filter{
@@ -130,17 +131,17 @@ void sharpen(vector<vector<Pixel> >& image)
 				}
 
 				// check for overflow & reset
-				if (image[i][j].overflow())
-					image[i][j].reset();
+				if (imageOut[i][j].overflow())
+					imageOut[i][j].reset();
 
 				// set new pixel rgb value
-				image[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
+				imageOut[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
 
 			}			
 		}
 	
 	// write image data to file
-	writeP3Image(out, image, comment, maxColor);
+	writeP3Image(out, imageOut, comment, maxColor);
 
 }
 
