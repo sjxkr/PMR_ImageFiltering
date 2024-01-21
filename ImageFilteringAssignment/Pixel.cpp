@@ -149,6 +149,9 @@ void Pixel::reset()
   if(red > MAXVAL) red = MAXVAL;
   if(green > MAXVAL) green = MAXVAL;
   if(blue > MAXVAL) blue = MAXVAL;
+  if (red < 0) red = 0;
+  if (green < 0) green = 0;
+  if (blue < 0) blue = 0;
   overflowFlag = 0;
 }
 
