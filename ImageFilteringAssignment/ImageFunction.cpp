@@ -99,7 +99,6 @@ void sharpen(vector<vector<Pixel> >& image)
 			
 			// pass kernel over pixels
 			for (int k = -1; k < 2; k++)
-			{
 				for (int l = -1; l < 2; l++)
 				{
 					// compute rgb sum product
@@ -107,29 +106,17 @@ void sharpen(vector<vector<Pixel> >& image)
 					greenSumProduct += image[i + k][j + l].getGreen() * filter[k + 1][l + 1];
 					blueSumProduct += image[i + k][j + l].getBlue() * filter[k + 1][l + 1];
 				}
-			}
 				
-			// deal with pixel underflow and overflow
-			if (redSumProduct < 0) {redSumProduct = 0;}
-			else
-			{
-				if (redSumProduct > 255) {redSumProduct = 255;}
-			}
-
-			if (greenSumProduct < 0) {greenSumProduct = 0;}
-			else
-			{
-				if (greenSumProduct > 255) {greenSumProduct = 255;}
-			}
-
-			if (blueSumProduct < 0) {blueSumProduct = 0;}
-			else
-			{
-				if (blueSumProduct > 255) {blueSumProduct = 255;}
-			}
+			// deal with pixel values below zero
+			if (redSumProduct < 0) { redSumProduct = 0; };
+			if (greenSumProduct < 0) { greenSumProduct = 0; };
+			if (blueSumProduct < 0) { blueSumProduct = 0; };
 
 			// set new pixel rgb value
 			imageOut[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
+
+			// deal with overflow condition
+			if (imageOut[i][j].overflow()) {imageOut[i][j].reset();}
 
 		}
 	
