@@ -1,4 +1,5 @@
 #include "ImageFunctions.h"
+#include <bitset>
 
 void openIOFiles(ifstream& fin, ofstream& fout, char inputFilename[])
 {
@@ -66,7 +67,7 @@ void sharpen(vector<vector<Pixel> >& image)
 	// initialise convolution matrix
 	vector<vector<int>> filter{
 		{-1, -1, -1},
-		{-1, 12, -1},
+		{-1, 8, -1},
 		{-1, -1, -1}
 	};
 
@@ -107,22 +108,47 @@ void sharpen(vector<vector<Pixel> >& image)
 					greenSumProduct += image[i + k][j + l].getGreen() * filter[k + 1][l + 1];
 					blueSumProduct += image[i + k][j + l].getBlue() * filter[k + 1][l + 1];
 				}
+			}
 				
-			// deal with pixel values below zero
-			if (redSumProduct < 0) { redSumProduct = 0; };
-			if (greenSumProduct < 0) { greenSumProduct = 0; };
-			if (blueSumProduct < 0) { blueSumProduct = 0; };
+			// deal with pixel underflow and overflow
+			if (redSumProduct < 0) {
+			redSumProduct = 0;
+			}
+			else
+			{
+				if (redSumProduct > 255) {
+					redSumProduct = 255;
+				}
+			}
+
+			if (greenSumProduct < 0) {
+				greenSumProduct = 0;
+			}
+			else
+			{
+				if (greenSumProduct > 255) {
+					greenSumProduct = 255;
+				}
+			}
+
+			if (blueSumProduct < 0) {
+				blueSumProduct = 0;
+			}
+			else
+			{
+				if (blueSumProduct > 255) {
+					blueSumProduct = 255;
+				}
+			}
 
 			// set new pixel rgb value
 			imageOut[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
 
-			// deal with overflow condition
-			if (imageOut[i][j].overflow()) {imageOut[i][j].reset();}
+		}
+	
+	// write image data to file
+	writeP3Image(out, imageOut, comment, maxColor);
 
-			// get max colour value
-			r = imageOut[i][j].getRed();
-			g = imageOut[i][j].getGreen();
-			b = imageOut[i][j].getBlue();
 
 			if (r > maxColor) { maxColor = r; }
 			if (g > maxColor) { maxColor = g; }
