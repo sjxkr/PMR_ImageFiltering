@@ -159,6 +159,10 @@ void Pixel::validate()
   if(red > MAXVAL) overflowFlag = overflowFlag|RMASK;
   if(green > MAXVAL) overflowFlag = overflowFlag|GMASK;
   if(blue > MAXVAL) overflowFlag = overflowFlag|BMASK;
+  if (red < 0) overflowFlag = overflowFlag | RMINMASK;
+  if (green < 0) overflowFlag = overflowFlag | GMINMASK;
+  if (blue < 0) overflowFlag = overflowFlag | BMINMASK;
+
 }
   
   
