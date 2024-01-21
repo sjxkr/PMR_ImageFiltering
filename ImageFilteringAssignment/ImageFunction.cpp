@@ -95,7 +95,7 @@ void sharpen(vector<vector<Pixel> >& image)
 		for (int j=1; j<w-1; j++)
 		{
 			// local declarations
-			int redSumProduct = 0, greenSumProduct = 0, blueSumProduct = 0;
+			Pixel SumProduct;
 			
 			// pass kernel over pixels
 			for (int k = -1; k < 2; k++)
@@ -103,36 +103,19 @@ void sharpen(vector<vector<Pixel> >& image)
 				for (int l = -1; l < 2; l++)
 				{
 					// compute rgb sum product
-					redSumProduct += image[i + k][j + l].getRed() * filter[k + 1][l + 1];
-					greenSumProduct += image[i + k][j + l].getGreen() * filter[k + 1][l + 1];
-					blueSumProduct += image[i + k][j + l].getBlue() * filter[k + 1][l + 1];
+					SumProduct += image[i + k][j + l].getRed() * filter[k + 1][l + 1];
 				}
 			}
 				
-			// deal with pixel underflow and overflow
-			if (redSumProduct < 0) {
-			redSumProduct = 0;
-			}
-
-
-			if (greenSumProduct < 0) {
-				greenSumProduct = 0;
-			}
-
-
-			if (blueSumProduct < 0) {
-				blueSumProduct = 0;
-			}
-
-
 			// set new pixel rgb value
 			imageOut[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
 
-			// deal with any overflow pixels
-			if (imageOut[i][j].overflow()) {
-				imageOut[i][j].reset();
-			}
+			
 
+
+			// deal with any overflow pixels
+			imageOut[i][j].reset();
+			
 		}
 	
 	// write image data to file
