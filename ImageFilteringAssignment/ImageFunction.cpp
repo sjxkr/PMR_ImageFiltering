@@ -63,11 +63,11 @@ void sharpen(vector<vector<Pixel> >& image)
 	int r = 0, g = 0, b = 0;
 	int maxColor = 0; // change this to be read from header, imageinfo variable.
 	vector<vector<Pixel>> imageOut = image;		// output image intialised as input image
-	
+
 	// initialise convolution matrix
 	vector<vector<int>> filter{
 		{-1, -1, -1},
-		{-1, 8, -1},
+		{-1, 12, -1},
 		{-1, -1, -1}
 	};
 
@@ -93,12 +93,12 @@ void sharpen(vector<vector<Pixel> >& image)
 	}
 
 	// apply sharpen filter to inner pixels
-	for (int i=1; i<h-1; i++)
-		for (int j=1; j<w-1; j++)
+	for (int i = 1; i < h - 1; i++)
+		for (int j = 1; j < w - 1; j++)
 		{
 			// local variables
 			int redSumProduct = 0, greenSumProduct = 0, blueSumProduct = 0;
-			
+
 			// pass kernel over pixels
 			for (int k = -1; k < 2; k++)
 				for (int l = -1; l < 2; l++)
@@ -108,53 +108,28 @@ void sharpen(vector<vector<Pixel> >& image)
 					greenSumProduct += image[i + k][j + l].getGreen() * filter[k + 1][l + 1];
 					blueSumProduct += image[i + k][j + l].getBlue() * filter[k + 1][l + 1];
 				}
-			}
-				
-			// deal with pixel underflow and overflow
-			if (redSumProduct < 0) {
-			redSumProduct = 0;
-			}
-			else
-			{
-				if (redSumProduct > 255) {
-					redSumProduct = 255;
-				}
-			}
 
-			if (greenSumProduct < 0) {
-				greenSumProduct = 0;
-			}
-			else
-			{
-				if (greenSumProduct > 255) {
-					greenSumProduct = 255;
-				}
-			}
-
-			if (blueSumProduct < 0) {
-				blueSumProduct = 0;
-			}
-			else
-			{
-				if (blueSumProduct > 255) {
-					blueSumProduct = 255;
-				}
-			}
+			// deal with pixel values below zero
+			if (redSumProduct < 0) { redSumProduct = 0; };
+			if (greenSumProduct < 0) { greenSumProduct = 0; };
+			if (blueSumProduct < 0) { blueSumProduct = 0; };
 
 			// set new pixel rgb value
 			imageOut[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
 
-		}
-	
-	// write image data to file
-	writeP3Image(out, imageOut, comment, maxColor);
+			// deal with overflow condition
+			if (imageOut[i][j].overflow()) { imageOut[i][j].reset(); }
 
+			// get max colour value
+			r = imageOut[i][j].getRed();
+			g = imageOut[i][j].getGreen();
+			b = imageOut[i][j].getBlue();
 
 			if (r > maxColor) { maxColor = r; }
 			if (g > maxColor) { maxColor = g; }
 			if (b > maxColor) { maxColor = b; }
 		}
-	
+
 	// write image data to file
 	writeP3Image(out, imageOut, comment, maxColor);
 
