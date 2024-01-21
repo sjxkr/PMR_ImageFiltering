@@ -154,7 +154,7 @@ void sharpen(vector<vector<Pixel> >& image)
 	int x = 1;
 	int y = 1;
 	cout << "selected pixel is " << image[x][y] << endl;
-	cout << "neighbouring pixels are" <<
+	cout << "neighbouring pixels col by col then row by row are" <<endl<<
 		image[x - 1][y - 1] << endl <<
 		image[x - 1][y] << endl <<
 		image[x - 1][y + 1] << endl <<
