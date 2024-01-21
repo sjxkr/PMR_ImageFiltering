@@ -21,13 +21,13 @@ int main()
 	//Declerations
 	ifstream fin;	//input file
 	ofstream fout;	//output file
-	char inputFilename[] = "placeholderfilename.txt";	//intialised char array
-	int Info[] = { 0,0,0 }; // used in read header function
+	char inputFilename[MAXLEN];	
+	int Info[3];
 	vector<vector<Pixel>> image;	// Pixel data of input image
 
 	openIOFiles(fin, fout, inputFilename);		//Open input and output file
 	convertP6ToP3(fin, fout, image, Info);
-	closeIOFiles(fin, fout);
+	//closeIOFiles(fin, fout);
 	sharpen(image);
 
 	/*

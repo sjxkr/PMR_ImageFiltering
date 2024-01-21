@@ -90,53 +90,61 @@ void sharpen(vector<vector<Pixel> >& image)
 		cout << "Error opening out file" << endl;
 	}
 
-	// apply sharpen filter
+	// apply sharpen filter to inner pixels
 	for (int i=1; i<h-1; i++)
 		for (int j=1; j<w-1; j++)
 		{
-			// check pixel is not on edge
-			if (!pixelEdgeRowColCheck(image, i, j))
-			{
-				
-				// local declarations
-				int redSumProduct = 0, greenSumProduct = 0, blueSumProduct = 0;
+			// local declarations
+			int redSumProduct = 0, greenSumProduct = 0, blueSumProduct = 0;
 			
-				// pass kernel over pixels
-				for (int k = -1; k < 2; k++)
+			// pass kernel over pixels
+			for (int k = -1; k < 2; k++)
+			{
+				for (int l = -1; l < 2; l++)
 				{
-					for (int l = -1; l < 2; l++)
-					{
-						// compute rgb sum product
-						redSumProduct += image[i + k][j + l].getRed() * filter[k + 1][l + 1];
-						greenSumProduct += image[i + k][j + l].getGreen() * filter[k + 1][l + 1];
-						blueSumProduct += image[i + k][j + l].getBlue() * filter[k + 1][l + 1];
-					}
+					// compute rgb sum product
+					redSumProduct += image[i + k][j + l].getRed() * filter[k + 1][l + 1];
+					greenSumProduct += image[i + k][j + l].getGreen() * filter[k + 1][l + 1];
+					blueSumProduct += image[i + k][j + l].getBlue() * filter[k + 1][l + 1];
 				}
+			}
 				
-				// deal with negative values
-				if (redSumProduct < 0) 
-				{
-					redSumProduct = 0;
+			// deal with pixel underflow and overflow
+			if (redSumProduct < 0) {
+			redSumProduct = 0;
+			}
+			else
+			{
+				if (redSumProduct > 255) {
+					redSumProduct = 255;
 				}
+			}
 
-				if (greenSumProduct < 0) 
-				{
-					greenSumProduct = 0;
+			if (greenSumProduct < 0) {
+				greenSumProduct = 0;
+			}
+			else
+			{
+				if (greenSumProduct > 255) {
+					greenSumProduct = 255;
 				}
+			}
 
-				if (blueSumProduct < 0) 
-				{
-					blueSumProduct = 0;
+			if (blueSumProduct < 0) {
+				blueSumProduct = 0;
+			}
+			else
+			{
+				if (blueSumProduct > 255) {
+					blueSumProduct = 255;
 				}
+			}
 
-				// set new pixel rgb value
-				imageOut[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
 
-				// check for overflow & reset
-				if (imageOut[i][j].overflow())
-					imageOut[i][j].reset();
 
-			}			
+			// set new pixel rgb value
+			imageOut[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
+
 		}
 	
 	// write image data to file
