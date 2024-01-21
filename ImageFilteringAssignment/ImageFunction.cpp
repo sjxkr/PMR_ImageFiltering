@@ -57,12 +57,12 @@ void sharpen(vector<vector<Pixel> >& image)
 	// define variables
 	int h = image.size();
 	int w = image[0].size();
-	ofstream out;	//filtered image stream
+	ofstream out;
 	char outFilename[MAXLEN];
 	char comment[MAXLEN] = "# Sharpen filter has been applied this image";
 	int maxColor = 255; // change this to be read from header, imageinfo variable.
 	vector<vector<Pixel>> imageOut = image;		// output image intialised as input image
-	int overflowFlag;
+	
 	
 	// initialise convolution matrix
 	vector<vector<int>> filter{
@@ -74,7 +74,7 @@ void sharpen(vector<vector<Pixel> >& image)
 	// open file for filtered image data
 
 	// prompt user for filename
-	cout << "enter filename for filtered image:" << endl;
+	cout << "enter filename without extension and press enter:" << endl;
 	cin >> outFilename;
 
 	// add suffix and file extension
@@ -96,12 +96,11 @@ void sharpen(vector<vector<Pixel> >& image)
 	for (int i=1; i<h-1; i++)
 		for (int j=1; j<w-1; j++)
 		{
-			// local declarations
+			// local variables
 			int redSumProduct = 0, greenSumProduct = 0, blueSumProduct = 0;
 			
 			// pass kernel over pixels
 			for (int k = -1; k < 2; k++)
-			{
 				for (int l = -1; l < 2; l++)
 				{
 					// compute rgb sum product
@@ -110,19 +109,40 @@ void sharpen(vector<vector<Pixel> >& image)
 					blueSumProduct += image[i + k][j + l].getBlue() * filter[k + 1][l + 1];
 				}
 			}
+				
+			// deal with pixel underflow and overflow
+			if (redSumProduct < 0) {
+			redSumProduct = 0;
+			}
+			else
+			{
+				if (redSumProduct > 255) {
+					redSumProduct = 255;
+				}
+			}
+
+			if (greenSumProduct < 0) {
+				greenSumProduct = 0;
+			}
+			else
+			{
+				if (greenSumProduct > 255) {
+					greenSumProduct = 255;
+				}
+			}
+
+			if (blueSumProduct < 0) {
+				blueSumProduct = 0;
+			}
+			else
+			{
+				if (blueSumProduct > 255) {
+					blueSumProduct = 255;
+				}
+			}
 
 			// set new pixel rgb value
 			imageOut[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
-
-			//print overflow flag binary
-			cout << "OverflowFlag binary is: " << bitset<32>(imageOut[i][j].getOverflowFlag()) << endl;
-
-			overflowFlag = imageOut[i][j].getOverflowFlag();
-
-			// deal with any overflow pixels
-			if (imageOut[i][j].overflow()) {
-				imageOut[i][j].reset();
-			}
 
 		}
 	
