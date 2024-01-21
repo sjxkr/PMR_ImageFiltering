@@ -1,4 +1,5 @@
 #include "ImageFunctions.h"
+#include <bitset>
 
 void openIOFiles(ifstream& fin, ofstream& fout, char inputFilename[])
 {
@@ -112,6 +113,11 @@ void sharpen(vector<vector<Pixel> >& image)
 
 			// set new pixel rgb value
 			imageOut[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
+
+			//print overflow flag binary
+			cout << "OverflowFlag binary is: " << bitset<32>(imageOut[i][j].getOverflowFlag()) << endl;
+
+			overflowFlag = imageOut[i][j].getOverflowFlag();
 
 			// deal with any overflow pixels
 			if (imageOut[i][j].overflow()) {
