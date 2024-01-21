@@ -95,7 +95,7 @@ void sharpen(vector<vector<Pixel> >& image)
 		for (int j=1; j<w-1; j++)
 		{
 			// local declarations
-			int redSumProduct = 0, greenSumProduct = 0, blueSumProduct = 0;
+			unsigned redSumProduct = 0, greenSumProduct = 0, blueSumProduct = 0;
 			
 			// pass kernel over pixels
 			for (int k = -1; k < 2; k++)
