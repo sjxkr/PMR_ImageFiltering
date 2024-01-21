@@ -110,34 +110,22 @@ void sharpen(vector<vector<Pixel> >& image)
 			}
 				
 			// deal with pixel underflow and overflow
-			if (redSumProduct < 0) {
-			redSumProduct = 0;
-			}
+			if (redSumProduct < 0) {redSumProduct = 0;}
 			else
 			{
-				if (redSumProduct > 255) {
-					redSumProduct = 255;
-				}
+				if (redSumProduct > 255) {redSumProduct = 255;}
 			}
 
-			if (greenSumProduct < 0) {
-				greenSumProduct = 0;
-			}
+			if (greenSumProduct < 0) {greenSumProduct = 0;}
 			else
 			{
-				if (greenSumProduct > 255) {
-					greenSumProduct = 255;
-				}
+				if (greenSumProduct > 255) {greenSumProduct = 255;}
 			}
 
-			if (blueSumProduct < 0) {
-				blueSumProduct = 0;
-			}
+			if (blueSumProduct < 0) {blueSumProduct = 0;}
 			else
 			{
-				if (blueSumProduct > 255) {
-					blueSumProduct = 255;
-				}
+				if (blueSumProduct > 255) {blueSumProduct = 255;}
 			}
 
 			// set new pixel rgb value
