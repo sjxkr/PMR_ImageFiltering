@@ -65,7 +65,7 @@ void sharpen(vector<vector<Pixel> >& image)
 	// initialise convolution matrix
 	vector<vector<int>> filter{
 		{-1, -1, -1},
-		{-1, 12, -1},
+		{-1, 10, -1},
 		{-1, -1, -1}
 	};
 
