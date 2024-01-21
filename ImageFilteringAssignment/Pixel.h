@@ -29,6 +29,7 @@ class Pixel
 	unsigned getRed() const {return red;}
 	unsigned getGreen() const {return green;}
 	unsigned getBlue() const {return blue;}
+	unsigned short getOverflowFlag() const { return overflowFlag; }
 
 	// Mutator Methods
 	Pixel& setPixel(unsigned r, unsigned g, unsigned b);
