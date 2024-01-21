@@ -18,7 +18,7 @@ void openIOFiles(ifstream& fin, ofstream& fout, char inputFilename[]);
 void closeIOFiles(ifstream& fin, ofstream& fout); // shahir to create
 void convertP6ToP3(ifstream& bin, ofstream& out, vector<vector<Pixel> >& image, int info[1]);
 void smooth(vector<vector<Pixel> >& image);		//shahir to create
-void sharpen(vector<vector<Pixel> >& image);	
+void sharpen(vector<vector<Pixel> >& image);	//shahir to create
 void edgeDetection(vector<vector<Pixel> >& image);		//shahir to create
 void writeP3Image(ofstream& out, vector<vector<Pixel> >& image, char comment[], int maxColor);
 void readAndWriteImageData(ifstream& fin, ofstream& fout, vector<vector<Pixel> >& image, int w, int h);
