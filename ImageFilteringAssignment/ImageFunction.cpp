@@ -151,8 +151,8 @@ void sharpen(vector<vector<Pixel> >& image)
 
 	// Output test
 
-	int x = 1;
-	int y = 1;
+	int x = 100;
+	int y = 100;
 	cout << "selected pixel is " << image[x][y] << endl;
 	cout << "neighbouring pixels col by col then row by row are" <<endl<<
 		image[x - 1][y - 1] << endl <<
@@ -225,7 +225,7 @@ void writeP3Image(ofstream& out, vector<vector<Pixel> >& image, char comment[], 
 		{
 			out << image[i][j];
 			++pCount;
-			if (pCount == 10) {
+			if (pCount == w) {
 				out << newline;
 				pCount = 0;
 			}
