@@ -128,7 +128,6 @@ void sharpen(vector<vector<Pixel> >& image)
 			if (r > maxColor) { maxColor = r; }
 			if (g > maxColor) { maxColor = g; }
 			if (b > maxColor) { maxColor = b; }
-
 		}
 	
 	// write image data to file
