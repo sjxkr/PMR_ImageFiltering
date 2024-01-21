@@ -65,7 +65,7 @@ void sharpen(vector<vector<Pixel> >& image)
 	// initialise convolution matrix
 	vector<vector<int>> filter{
 		{-1, -1, -1},
-		{-1, 9, -1},
+		{-1, 10, -1},
 		{-1, -1, -1}
 	};
 
@@ -106,41 +106,39 @@ void sharpen(vector<vector<Pixel> >& image)
 					redSumProduct += image[i + k][j + l].getRed() * filter[k + 1][l + 1];
 					greenSumProduct += image[i + k][j + l].getGreen() * filter[k + 1][l + 1];
 					blueSumProduct += image[i + k][j + l].getBlue() * filter[k + 1][l + 1];
-
-					// deal with pixel underflow and overflow
-					if (redSumProduct < 0) {
-						redSumProduct = 0;
-					}
-					else
-					{
-						if (redSumProduct > 255) {
-							redSumProduct = 255;
-						}
-					}
-
-					if (greenSumProduct < 0) {
-						greenSumProduct = 0;
-					}
-					else
-					{
-						if (greenSumProduct > 255) {
-							greenSumProduct = 255;
-						}
-					}
-
-					if (blueSumProduct < 0) {
-						blueSumProduct = 0;
-					}
-					else
-					{
-						if (blueSumProduct > 255) {
-							blueSumProduct = 255;
-						}
-					}
-
 				}
 			}
 				
+			// deal with pixel underflow and overflow
+			if (redSumProduct < 0) {
+			redSumProduct = 0;
+			}
+			else
+			{
+				if (redSumProduct > 255) {
+					redSumProduct = 255;
+				}
+			}
+
+			if (greenSumProduct < 0) {
+				greenSumProduct = 0;
+			}
+			else
+			{
+				if (greenSumProduct > 255) {
+					greenSumProduct = 255;
+				}
+			}
+
+			if (blueSumProduct < 0) {
+				blueSumProduct = 0;
+			}
+			else
+			{
+				if (blueSumProduct > 255) {
+					blueSumProduct = 255;
+				}
+			}
 
 			// set new pixel rgb value
 			imageOut[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
@@ -153,8 +151,8 @@ void sharpen(vector<vector<Pixel> >& image)
 
 	// Output test
 
-	int x = 179;
-	int y = 7;
+	int x = 100;
+	int y = 100;
 	cout << "selected pixel is " << image[x][y] << endl;
 	cout << "neighbouring pixels col by col then row by row are" <<endl<<
 		image[x - 1][y - 1] << endl <<
