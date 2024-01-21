@@ -65,7 +65,7 @@ void sharpen(vector<vector<Pixel> >& image)
 	// initialise convolution matrix
 	vector<vector<int>> filter{
 		{-1, -1, -1},
-		{-1,  9, -1},
+		{-1,  12, -1},
 		{-1, -1, -1}
 	};
 
@@ -139,8 +139,6 @@ void sharpen(vector<vector<Pixel> >& image)
 					blueSumProduct = 255;
 				}
 			}
-
-
 
 			// set new pixel rgb value
 			imageOut[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
