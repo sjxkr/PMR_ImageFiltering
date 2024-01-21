@@ -150,23 +150,13 @@ void sharpen(vector<vector<Pixel> >& image)
 	writeP3Image(out, imageOut, comment, maxColor);
 
 
-	// Output test
-
-	int x = 100;
-	int y = 100;
-	cout << "selected pixel is " << image[x][y] << endl;
-	cout << "neighbouring pixels col by col then row by row are" <<endl<<
-		image[x - 1][y - 1] << endl <<
-		image[x - 1][y] << endl <<
-		image[x - 1][y + 1] << endl <<
-		image[x][y - 1] << endl <<
-		image[x][y] << endl <<
-		image[x][y + 1] << endl <<
-		image[x + 1][y - 1] << endl <<
-		image[x + 1][y] << endl <<
-		image[x + 1][y + 1] << endl;
-
-	cout << "output pixel is " << imageOut[x][y] << endl;
+			if (r > maxColor) { maxColor = r; }
+			if (g > maxColor) { maxColor = g; }
+			if (b > maxColor) { maxColor = b; }
+		}
+	
+	// write image data to file
+	writeP3Image(out, imageOut, comment, maxColor);
 
 }
 
