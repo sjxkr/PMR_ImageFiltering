@@ -57,12 +57,13 @@ void sharpen(vector<vector<Pixel> >& image)
 	// define variables
 	int h = image.size();
 	int w = image[0].size();
+	vector<vector<Pixel>> imageOut = image;		// output image intialised as input image
 	ofstream out;
 	char outFilename[MAXLEN];
 	char comment[MAXLEN] = "# Sharpen filter has been applied this image";
 	int r = 0, g = 0, b = 0;
-	int maxColor = 0; // change this to be read from header, imageinfo variable.
-	vector<vector<Pixel>> imageOut = image;		// output image intialised as input image
+	int maxColor = 0;
+	
 	
 	// initialise convolution matrix
 	vector<vector<int>> filter{
@@ -74,7 +75,7 @@ void sharpen(vector<vector<Pixel> >& image)
 	// open file for filtered image data
 
 	// prompt user for filename
-	cout << "enter filename for filtered image:" << endl;
+	cout << "enter filename without extension and press enter:" << endl;
 	cin >> outFilename;
 
 	// add suffix and file extension
