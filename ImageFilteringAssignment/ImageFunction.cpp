@@ -59,7 +59,8 @@ void sharpen(vector<vector<Pixel> >& image)
 	ofstream out;
 	char outFilename[MAXLEN];
 	char comment[MAXLEN] = "# Sharpen filter has been applied this image";
-	int maxColor = 255; // change this to be read from header, imageinfo variable.
+	int r = 0, g = 0, b = 0;
+	int maxColor = 0; // change this to be read from header, imageinfo variable.
 	vector<vector<Pixel>> imageOut = image;		// output image intialised as input image
 	
 	// initialise convolution matrix
@@ -94,7 +95,7 @@ void sharpen(vector<vector<Pixel> >& image)
 	for (int i=1; i<h-1; i++)
 		for (int j=1; j<w-1; j++)
 		{
-			// local declarations
+			// local variables
 			int redSumProduct = 0, greenSumProduct = 0, blueSumProduct = 0;
 			
 			// pass kernel over pixels
@@ -118,6 +119,14 @@ void sharpen(vector<vector<Pixel> >& image)
 			// deal with overflow condition
 			if (imageOut[i][j].overflow()) {imageOut[i][j].reset();}
 
+			// get max colour value
+			r = imageOut[i][j].getRed();
+			g = imageOut[i][j].getGreen();
+			b = imageOut[i][j].getBlue();
+
+			if (r > maxColor) { maxColor = r; }
+			if (g > maxColor) { maxColor = g; }
+			if (b > maxColor) { maxColor = b; }
 		}
 	
 	// write image data to file
