@@ -148,6 +148,25 @@ void sharpen(vector<vector<Pixel> >& image)
 	// write image data to file
 	writeP3Image(out, imageOut, comment, maxColor);
 
+
+	// Output test
+
+	int x = 1;
+	int y = 1;
+	cout << "selected pixel is " << image[x][y] << endl;
+	cout << "neighbouring pixels are" <<
+		image[x - 1][y - 1] << endl <<
+		image[x - 1][y] << endl <<
+		image[x - 1][y + 1] << endl <<
+		image[x][y - 1] << endl <<
+		image[x][y] << endl <<
+		image[x][y + 1] << endl <<
+		image[x + 1][y - 1] << endl <<
+		image[x + 1][y] << endl <<
+		image[x + 1][y + 1] << endl;
+
+	cout << "output pixel is " << imageOut[x][y] << endl;
+
 }
 
 void smooth(vector<vector<Pixel> >& image)
