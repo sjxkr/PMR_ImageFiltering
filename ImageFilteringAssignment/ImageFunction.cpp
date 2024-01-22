@@ -154,7 +154,7 @@ void smooth(vector<vector<Pixel> >& image)
 	cin >> outFilename;
 
 	// add suffix and file extension
-	strcat(outFilename, "P3_sh.ppm");
+	strcat(outFilename, "P3_sm.ppm");
 
 	// try to open the file
 	try {
