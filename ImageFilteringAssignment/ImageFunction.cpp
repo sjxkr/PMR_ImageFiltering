@@ -185,6 +185,10 @@ void smooth(vector<vector<Pixel> >& image)
 				cout << "Overflow detected at pixel index " << "[" << i << "]" << "[" << j << "]" << endl;
 			}	
 		}
+	
+	// write image data to file
+	writeP3Image(out, imageOut, comment, maxColor);
+
 }
 
 void edgeDetection(vector<vector<Pixel> >& image)
