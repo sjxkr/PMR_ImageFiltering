@@ -255,18 +255,36 @@ void edgeDetection(vector<vector<Pixel> >& image)
 					redSumProductH += image[i + k][j + l].getRed() * hFilter[k + 1][l + 1];
 					greenSumProductH += image[i + k][j + l].getGreen() * hFilter[k + 1][l + 1];
 					blueSumProductH += image[i + k][j + l].getBlue() * hFilter[k + 1][l + 1];
+
+					// pass vertical kernel over image
+					redSumProductV += image[i + k][j + l].getRed() * vFilter[k + 1][l + 1];
+					greenSumProductV += image[i + k][j + l].getGreen() * vFilter[k + 1][l + 1];
+					blueSumProductV += image[i + k][j + l].getBlue() * vFilter[k + 1][l + 1];
+
 				}
 
 			// deal with pixel values below zero
 			if (redSumProductH < 0) { redSumProductH = 0; };
 			if (greenSumProductH < 0) { greenSumProductH = 0; };
 			if (blueSumProductH < 0) { blueSumProductH = 0; };
+			if (redSumProductV < 0) { redSumProductV = 0; };
+			if (greenSumProductV < 0) { greenSumProductV = 0; };
+			if (blueSumProductV < 0) { blueSumProductV = 0; };
+
 
 			// set new pixel rgb value
 			hDeriv[i][j].setPixel(redSumProductH, greenSumProductH, blueSumProductH);
 
+			// set new pixel rgb value
+			vDeriv[i][j].setPixel(redSumProductV, greenSumProductV, blueSumProductV);
+
+
 			// deal with overflow condition
 			if (hDeriv[i][j].overflow()) { hDeriv[i][j].reset(); }
+
+			// deal with overflow condition
+			if (vDeriv[i][j].overflow()) { vDeriv[i][j].reset(); }
+
 
 			// get max colour value
 			r = hDeriv[i][j].getRed();
@@ -280,6 +298,7 @@ void edgeDetection(vector<vector<Pixel> >& image)
 
 	// write image data to file
 	writeP3Image(out, hDeriv, comment, maxColor);
+	writeP3Image(out, vDeriv, comment, maxColor);
 
 
 }
