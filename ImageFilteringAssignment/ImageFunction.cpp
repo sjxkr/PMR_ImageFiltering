@@ -196,7 +196,7 @@ void edgeDetection(vector<vector<Pixel> >& image)
 	// define variables
 	int h = image.size();
 	int w = image[0].size();
-	ofstream out;
+	ofstream out, out2;
 	char outFilename[MAXLEN];
 	char comment[MAXLEN] = "# Edge detection has been applied this image";
 	int r = 0, g = 0, b = 0;
@@ -233,6 +233,7 @@ void edgeDetection(vector<vector<Pixel> >& image)
 			throw runtime_error("Could not create file!");
 		}
 		out.open(outFilename);
+		out2.open("vertical.ppm");
 	}
 	// handle the exception
 	catch (exception e) {
@@ -298,7 +299,7 @@ void edgeDetection(vector<vector<Pixel> >& image)
 
 	// write image data to file
 	writeP3Image(out, hDeriv, comment, maxColor);
-	writeP3Image(out, vDeriv, comment, maxColor);
+	writeP3Image(out2, vDeriv, comment, maxColor);
 
 
 }
