@@ -35,6 +35,7 @@ int main()
 	// Apply filters to image
 	sharpen(image);
 	smooth(image);
+	edgeDetection(image);
 	
 	/*
 	writeHeader;
