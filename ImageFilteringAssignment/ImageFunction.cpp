@@ -140,16 +140,55 @@ void smooth(vector<vector<Pixel> >& image)
 	// define variables
 	int h = image.size();
 	int w = image[0].size();
-
-	// sum pixel values
+	ofstream out;
+	char outFilename[MAXLEN];
+	char comment[MAXLEN] = "# Smooth filter has been applied this image";
+	int maxColor = 0; // change this to be read from header, imageinfo variable.
 	Pixel sum;
+	vector<vector<Pixel>> imageOut = image;		// output image intialised as input image
+
+	// open file for filtered image data
+
+	// prompt user for filename
+	cout << "enter filename for filtered image:" << endl;
+	cin >> outFilename;
+
+	// add suffix and file extension
+	strcat(outFilename, "P3_sm.ppm");
+
+	// try to open the file
+	try {
+		if (!out) {
+			throw runtime_error("Could not create file!");
+		}
+		out.open(outFilename);
+	}
+	// handle the exception
+	catch (exception e) {
+		cout << "Error opening out file" << endl;
+	}
+
+	// compute average value of neighbouring pixels
 	for (int i = 1; i < h - 1; i++)
 		for (int j = 1; j < w - 1; j++)
 		{
-			sum = image[i + 1][j] + image[i - 1][j] + image[i][j + 1] + image[i][j - 1];
-			sum = sum / 4;
-			image[i][j] = sum;
+			sum = image[i + 1][j] + image[i - 1][j] + image[i][j + 1] + image[i][j - 1];	// sum weighted pixel values
+			sum = sum / 4;	// calculate average
+
+			// Set new pixel value is overflow = false
+			if (!sum.overflow()) {
+				imageOut[i][j] = sum;
+			}
+			else
+			{
+				// print message
+				cout << "Overflow detected at pixel index " << "[" << i << "]" << "[" << j << "]" << endl;
+			}	
 		}
+	
+	// write image data to file
+	writeP3Image(out, imageOut, comment, maxColor);
+
 }
 
 void edgeDetection(vector<vector<Pixel> >& image)
