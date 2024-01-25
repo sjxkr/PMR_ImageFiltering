@@ -33,8 +33,8 @@ int main()
 	closeIOFiles(fin, fout);
 
 	// Apply filters to image
-	sharpen(image);
-	smooth(image);
+	//sharpen(image);
+	//smooth(image);
 	edgeDetection(image);
 	
 	/*

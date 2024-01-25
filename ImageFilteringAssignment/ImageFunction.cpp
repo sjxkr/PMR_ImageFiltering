@@ -248,7 +248,7 @@ void edgeDetection(vector<vector<Pixel> >& image)
 			// local variables
 			int redSumProductH = 0, greenSumProductH = 0, blueSumProductH = 0;
 			int redSumProductV = 0, greenSumProductV = 0, blueSumProductV = 0;
-			double redValue = 0, grnValue = 0, bluValue = 0;
+			int redValue = 0, grnValue = 0, bluValue = 0;
 
 			// pass kernel over pixels
 			for (int k = -1; k < 2; k++)
@@ -289,9 +289,9 @@ void edgeDetection(vector<vector<Pixel> >& image)
 			if (vDeriv[i][j].overflow()) { vDeriv[i][j].reset(); }
 
 			// combine the two derivatives
-			redValue = lrint(sqrt(hDeriv[i][j].getRed() ^ 2 + vDeriv[i][j].getRed() ^ 2));
-			grnValue = lrint(sqrt(hDeriv[i][j].getGreen() ^ 2 + vDeriv[i][j].getGreen() ^ 2));
-			bluValue = lrint(sqrt(hDeriv[i][j].getBlue() ^ 2 + vDeriv[i][j].getBlue() ^ 2));
+			redValue = lrint(sqrt(pow(hDeriv[i][j].getRed(),2) + pow(vDeriv[i][j].getRed(),2)));
+			grnValue = lrint(sqrt(pow(hDeriv[i][j].getGreen(),2) + pow(vDeriv[i][j].getGreen(),2)));
+			bluValue = lrint(sqrt(pow(hDeriv[i][j].getBlue(),2) + pow(vDeriv[i][j].getBlue(),2)));
 
 			// set combined pixel value
 			imageOut[i][j].setPixel(redValue, grnValue, bluValue);
@@ -305,6 +305,20 @@ void edgeDetection(vector<vector<Pixel> >& image)
 			if (g > maxColor) { maxColor = g; }
 			if (b > maxColor) { maxColor = b; }
 		}
+
+	// debugging print values
+	int d=255, f=170;		// pixel values
+
+	cout << image[d - 1][f - 1] << endl;
+	cout << image[d - 1][f - 0] << endl;
+	cout << image[d - 1][f + 1] << endl;
+	cout << image[d - 0][f - 1] << endl;
+	cout << image[d - 0][f - 0] << endl;
+	cout << image[d - 0][f + 1] << endl;
+	cout << image[d + 1][f - 1] << endl;
+	cout << image[d + 1][f - 0] << endl;
+	cout << image[d + 1][f + 1] << endl;
+	cout << "Calculated out der pixel value = " << vDeriv[d][f] << endl;
 
 	// write image data to file
 	writeP3Image(out, imageOut, comment, maxColor);
