@@ -293,8 +293,16 @@ void edgeDetection(vector<vector<Pixel> >& image)
 			grnValue = lrint(sqrt(pow(hDeriv[i][j].getGreen(),2) + pow(vDeriv[i][j].getGreen(),2)));
 			bluValue = lrint(sqrt(pow(hDeriv[i][j].getBlue(),2) + pow(vDeriv[i][j].getBlue(),2)));
 
+			// deal with underfow
+			if (redValue < 0) { redValue = 0; };
+			if (grnValue < 0) { grnValue = 0; };
+			if (bluValue < 0) { bluValue = 0; };
+
 			// set combined pixel value
 			imageOut[i][j].setPixel(redValue, grnValue, bluValue);
+
+			// deal with overflow
+			if (imageOut[i][j].overflow()) { imageOut[i][j].reset(); };
 
 			// get max colour value
 			r = imageOut[i][j].getRed();
