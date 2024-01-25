@@ -1,5 +1,6 @@
 #include "ImageFunctions.h"
 #include <bitset>
+#include <cmath>
 
 void openIOFiles(ifstream& fin, ofstream& fout, char inputFilename[])
 {
@@ -247,6 +248,7 @@ void edgeDetection(vector<vector<Pixel> >& image)
 			// local variables
 			int redSumProductH = 0, greenSumProductH = 0, blueSumProductH = 0;
 			int redSumProductV = 0, greenSumProductV = 0, blueSumProductV = 0;
+			double redValue = 0, grnValue = 0, bluValue = 0;
 
 			// pass kernel over pixels
 			for (int k = -1; k < 2; k++)
@@ -280,17 +282,24 @@ void edgeDetection(vector<vector<Pixel> >& image)
 			vDeriv[i][j].setPixel(redSumProductV, greenSumProductV, blueSumProductV);
 
 
-			// deal with overflow condition
+			// deal with overflow condition in horizontal derivative
 			if (hDeriv[i][j].overflow()) { hDeriv[i][j].reset(); }
 
-			// deal with overflow condition
+			// deal with overflow condition in vertical derivative
 			if (vDeriv[i][j].overflow()) { vDeriv[i][j].reset(); }
 
+			// combine the two derivatives
+			redValue = lrint(sqrt(hDeriv[i][j].getRed() ^ 2 + vDeriv[i][j].getRed() ^ 2));
+			grnValue = lrint(sqrt(hDeriv[i][j].getGreen() ^ 2 + vDeriv[i][j].getGreen() ^ 2));
+			bluValue = lrint(sqrt(hDeriv[i][j].getBlue() ^ 2 + vDeriv[i][j].getBlue() ^ 2));
+
+			// set combined pixel value
+			imageOut[i][j].setPixel(redValue, grnValue, bluValue);
 
 			// get max colour value
-			r = hDeriv[i][j].getRed();
-			g = hDeriv[i][j].getGreen();
-			b = hDeriv[i][j].getBlue();
+			r = imageOut[i][j].getRed();
+			g = imageOut[i][j].getGreen();
+			b = imageOut[i][j].getBlue();
 
 			if (r > maxColor) { maxColor = r; }
 			if (g > maxColor) { maxColor = g; }
@@ -298,9 +307,7 @@ void edgeDetection(vector<vector<Pixel> >& image)
 		}
 
 	// write image data to file
-	writeP3Image(out, hDeriv, comment, maxColor);
-	writeP3Image(out2, vDeriv, comment, maxColor);
-
+	writeP3Image(out, imageOut, comment, maxColor);
 
 }
 
