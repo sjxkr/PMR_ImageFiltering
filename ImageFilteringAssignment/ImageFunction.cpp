@@ -314,22 +314,6 @@ void edgeDetection(vector<vector<Pixel> >& image)
 			if (b > maxColor) { maxColor = b; }
 		}
 
-	// debugging print values
-	int d=128, f=100;		// pixel values
-
-	cout << "Pixel at index [-1][-1] is "<<image[d - 1][f - 1] << endl;
-	cout << "Pixel at index [-1][0] is "<<image[d - 1][f - 0] << endl;
-	cout << "Pixel at index [-1][1] is "<<image[d - 1][f + 1] << endl;
-	cout << "Pixel at index [0][-1] is "<<image[d - 0][f - 1] << endl;
-	cout << "Pixel at index [0][0] is "<<image[d - 0][f - 0] << endl;
-	cout << "Pixel at index [0][1] is "<<image[d - 0][f + 1] << endl;
-	cout << "Pixel at index [1][-1] is "<<image[d + 1][f - 1] << endl;
-	cout << "Pixel at index [1][0] is "<<image[d + 1][f - 0] << endl;
-	cout << "Pixel at index [1][1] is "<<image[d + 1][f + 1] << endl;
-	cout << "Pixel value in vertical derivative = " << vDeriv[d][f] << endl;
-	cout << "Pixel value in horizontal derivative = " << hDeriv[d][f] << endl;
-	cout << "Combined pixel value = " << imageOut[d][f] << endl;
-
 	// write image data to file
 	writeP3Image(out, imageOut, comment, maxColor);
 
