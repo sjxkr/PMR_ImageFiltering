@@ -18,19 +18,24 @@ using namespace std;
 
 int main()
 {
-	//Declerations
-	ifstream fin;	//input file
-	ofstream fout;	//output file
+	// Declerations
+	ifstream fin;	// Input file
+	ofstream fout;	// Output file
 	char inputFilename[MAXLEN];	
 	int Info[3];
 	vector<vector<Pixel>> image;	// Pixel data of input image
 
-	openIOFiles(fin, fout, inputFilename);		//Open input and output file
+	// Open input and output streams and apply sharpen filter
+	openIOFiles(fin, fout, inputFilename);		
 	convertP6ToP3(fin, fout, image, Info);
+
+	// Close input and output streams
 	closeIOFiles(fin, fout);
-	sharpen(image);
-	openIOFiles(fin, fout, inputFilename);
-	smooth(image);
+
+	// Apply filters to image
+	//sharpen(image);
+	//smooth(image);
+	edgeDetection(image);
 	
 	/*
 	writeHeader;
