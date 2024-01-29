@@ -322,7 +322,6 @@ void edgeDetection(vector<vector<Pixel> >& image)
 bool pixelEdgeRowColCheck(vector<vector<Pixel>>& image, int i, int j)
 {
 	// check if pixel is in first or last row or column
-
 	// define input variables
 	bool edge = false;
 	int h = image.size();
