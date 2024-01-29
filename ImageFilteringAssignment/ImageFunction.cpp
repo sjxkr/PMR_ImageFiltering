@@ -241,7 +241,7 @@ void edgeDetection(vector<vector<Pixel> >& image)
 		cout << "Error opening out file" << endl;
 	}
 
-	// apply sharpen filter to inner pixels
+	// apply filter to inner pixels
 	for (int i = 1; i < h - 1; i++)
 		for (int j = 1; j < w - 1; j++)
 		{
@@ -315,7 +315,7 @@ void edgeDetection(vector<vector<Pixel> >& image)
 		}
 
 	// debugging print values
-	int d=255, f=170;		// pixel values
+	int d=128, f=100;		// pixel values
 
 	cout << "Pixel at index [-1][-1] is "<<image[d - 1][f - 1] << endl;
 	cout << "Pixel at index [-1][0] is "<<image[d - 1][f - 0] << endl;
