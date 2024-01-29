@@ -512,3 +512,19 @@ void writeHeader(ofstream& fout, char magicNumber[], char comment[], int w, int 
 	fout << w << ' ' << h << ' ' << maxPixelVal << newline;
 }
 
+void testOverflow()
+{
+	// define variables
+	Pixel Pixel;
+	int r, g, b;
+
+	// set test pixel values
+	r = 256;
+	g = 155;
+	b = 155;
+
+	// set pixel value
+	Pixel.setPixel(r, g, b);
+
+}
+
