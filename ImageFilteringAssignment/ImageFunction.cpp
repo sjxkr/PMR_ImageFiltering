@@ -110,11 +110,6 @@ void sharpen(vector<vector<Pixel> >& image)
 					blueSumProduct += image[i + k][j + l].getBlue() * filter[k + 1][l + 1];
 				}
 
-			// deal with pixel values below zero
-			if (redSumProduct < 0) { redSumProduct = 0; };
-			if (greenSumProduct < 0) { greenSumProduct = 0; };
-			if (blueSumProduct < 0) { blueSumProduct = 0; };
-
 			// set new pixel rgb value
 			imageOut[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
 
@@ -184,6 +179,9 @@ void smooth(vector<vector<Pixel> >& image)
 			{
 				// print message
 				cout << "Overflow detected at pixel index " << "[" << i << "]" << "[" << j << "]" << endl;
+				
+				// reset pixel
+				sum.reset();
 			}	
 		}
 	
@@ -266,15 +264,6 @@ void edgeDetection(vector<vector<Pixel> >& image)
 
 				}
 
-			// deal with pixel values below zero
-			if (redSumProductH < 0) { redSumProductH = 0; };
-			if (greenSumProductH < 0) { greenSumProductH = 0; };
-			if (blueSumProductH < 0) { blueSumProductH = 0; };
-			if (redSumProductV < 0) { redSumProductV = 0; };
-			if (greenSumProductV < 0) { greenSumProductV = 0; };
-			if (blueSumProductV < 0) { blueSumProductV = 0; };
-
-
 			// set new pixel rgb value
 			hDeriv[i][j].setPixel(redSumProductH, greenSumProductH, blueSumProductH);
 
@@ -282,10 +271,10 @@ void edgeDetection(vector<vector<Pixel> >& image)
 			vDeriv[i][j].setPixel(redSumProductV, greenSumProductV, blueSumProductV);
 
 
-			// deal with overflow condition in horizontal derivative
+			// deal with overflow/underflow condition in horizontal derivative
 			if (hDeriv[i][j].overflow()) { hDeriv[i][j].reset(); }
 
-			// deal with overflow condition in vertical derivative
+			// deal with overflow/underflow condition in vertical derivative
 			if (vDeriv[i][j].overflow()) { vDeriv[i][j].reset(); }
 
 			// combine the two derivatives
@@ -293,15 +282,10 @@ void edgeDetection(vector<vector<Pixel> >& image)
 			grnValue = lrint(sqrt(pow(hDeriv[i][j].getGreen(),2) + pow(vDeriv[i][j].getGreen(),2)));
 			bluValue = lrint(sqrt(pow(hDeriv[i][j].getBlue(),2) + pow(vDeriv[i][j].getBlue(),2)));
 
-			// deal with underfow
-			if (redValue < 0) { redValue = 0; };
-			if (grnValue < 0) { grnValue = 0; };
-			if (bluValue < 0) { bluValue = 0; };
-
 			// set combined pixel value
 			imageOut[i][j].setPixel(redValue, grnValue, bluValue);
 
-			// deal with overflow
+			// deal with overflow/underflow
 			if (imageOut[i][j].overflow()) { imageOut[i][j].reset(); };
 
 			// get max colour value
@@ -510,5 +494,27 @@ void writeHeader(ofstream& fout, char magicNumber[], char comment[], int w, int 
 	fout << magicNumber << newline;
 	fout << comment << newline;
 	fout << w << ' ' << h << ' ' << maxPixelVal << newline;
+}
+
+void testOverflow()
+{
+	// define variables
+	Pixel Pixel;
+	int r, g, b;
+
+	// set test pixel values
+	r = -1000;
+	g = 255;
+	b = -1;
+
+	// set pixel value
+	Pixel.setPixel(r, g, b);
+
+	// reset pixel
+	if (Pixel.overflow()) { Pixel.reset(); }
+
+	// print new pixel
+	cout << Pixel << "\n";
+
 }
 
