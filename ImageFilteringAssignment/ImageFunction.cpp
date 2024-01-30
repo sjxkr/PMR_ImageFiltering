@@ -519,12 +519,18 @@ void testOverflow()
 	int r, g, b;
 
 	// set test pixel values
-	r = 256;
-	g = 155;
-	b = 155;
+	r = -10;
+	g = 2000;
+	b = -200;
 
 	// set pixel value
 	Pixel.setPixel(r, g, b);
+
+	// reset pixel
+	if (Pixel.overflow()) { Pixel.reset(); }
+
+	// print new pixel
+	cout << Pixel << "\n";
 
 }
 

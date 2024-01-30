@@ -25,6 +25,9 @@ int main()
 	int Info[3];
 	vector<vector<Pixel>> image;	// Pixel data of input image
 
+
+	testOverflow();
+	/*
 	// Open input and output streams and apply sharpen filter
 	openIOFiles(fin, fout, inputFilename);		
 	convertP6ToP3(fin, fout, image, Info);
@@ -36,6 +39,7 @@ int main()
 	sharpen(image);
 	smooth(image);
 	edgeDetection(image);
+	*/
 	
 	/*
 	writeHeader;

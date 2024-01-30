@@ -146,12 +146,12 @@ bool Pixel::overflow()
 /* reset the rgb values to 255 (white)                            */
 void Pixel::reset()
 {
-  if(red > MAXVAL) red = MAXVAL;
-  if(green > MAXVAL) green = MAXVAL;
-  if(blue > MAXVAL) blue = MAXVAL;
-  if (red < MINVAL) red = 0;
-  if (green < MINVAL) green = 0;
-  if (blue < MINVAL) blue = 0;
+  if(red > MAXVAL && red < MINVAL) red = MAXVAL;
+  if(green > MAXVAL && green < MINVAL) green = MAXVAL;
+  if(blue > MAXVAL && blue < MINVAL) blue = MAXVAL;
+  if (red > MINVAL) red = 0;
+  if (green > MINVAL) green = 0;
+  if (blue > MINVAL) blue = 0;
   overflowFlag = 0;
 }
 
@@ -159,12 +159,12 @@ void Pixel::reset()
 /* set the overflow flag                                          */
 void Pixel::validate()
 {
-  if(red > MAXVAL) overflowFlag = overflowFlag|RMASK;
-  if(green > MAXVAL) overflowFlag = overflowFlag|GMASK;
-  if(blue > MAXVAL) overflowFlag = overflowFlag|BMASK;
-  if (red < MINVAL) overflowFlag = overflowFlag|RMINMASK;
-  if (green < MINVAL) overflowFlag = overflowFlag|GMINMASK;
-  if (blue < MINVAL) overflowFlag = overflowFlag|BMINMASK;
+  if(red > MAXVAL && red<MINVAL) overflowFlag = overflowFlag|RMASK;
+  if(green > MAXVAL && green<MINVAL) overflowFlag = overflowFlag|GMASK;
+  if(blue > MAXVAL && blue<MINVAL) overflowFlag = overflowFlag|BMASK;
+  if (red > MINVAL) overflowFlag = overflowFlag|RMINMASK;
+  if (green > MINVAL) overflowFlag = overflowFlag|GMINMASK;
+  if (blue > MINVAL) overflowFlag = overflowFlag|BMINMASK;
 }
   
   
