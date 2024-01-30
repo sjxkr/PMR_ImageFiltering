@@ -8,7 +8,7 @@ void openIOFiles(ifstream& fin, ofstream& fout, char inputFilename[])
 	char outputFilename[MAXLEN];
 
 	// prompt user for input file
-	cout << "enter filename ";
+	cout << "Enter filename of input binary image including file extension : ";
 	cin >> inputFilename;
 
 	// open .ppm binary file for input
@@ -52,7 +52,7 @@ void convertP6ToP3(ifstream& bin, ofstream& out, vector<vector<Pixel> >& image, 
 }
 
 
-void sharpen(vector<vector<Pixel> >& image)
+void sharpen(vector<vector<Pixel> >& image, char userFilename[])
 {
 
 	// define variables
@@ -74,9 +74,16 @@ void sharpen(vector<vector<Pixel> >& image)
 
 	// open file for filtered image data
 
-	// prompt user for filename
-	cout << "enter filename for filtered image:" << endl;
-	cin >> outFilename;
+	// generate output filename for processed image
+	strcpy(outFilename, userFilename);
+
+	// handle filename containing a file extension
+	if (strchr(outFilename, '.')!=NULL)
+	{
+		char* loc = strchr(outFilename, '.');
+		*loc = '\0';		// '\0' determines length of string in C
+	}
+
 
 	// add suffix and file extension
 	strcat(outFilename, "P3_sh.ppm");
@@ -131,7 +138,7 @@ void sharpen(vector<vector<Pixel> >& image)
 
 }
 
-void smooth(vector<vector<Pixel> >& image)
+void smooth(vector<vector<Pixel> >& image, char userFilename[])
 {
 	// define variables
 	int h = image.size();
@@ -145,9 +152,15 @@ void smooth(vector<vector<Pixel> >& image)
 
 	// open file for filtered image data
 
-	// prompt user for filename
-	cout << "enter filename for filtered image:" << endl;
-	cin >> outFilename;
+	// generate output filename for processed image
+	strcpy(outFilename, userFilename);
+
+	// handle filename containing a file extension
+	if (strchr(outFilename, '.') != NULL)
+	{
+		char* loc = strchr(outFilename, '.');
+		*loc = '\0';		// '\0' determines length of string in C
+	}
 
 	// add suffix and file extension
 	strcat(outFilename, "P3_sm.ppm");
@@ -190,7 +203,7 @@ void smooth(vector<vector<Pixel> >& image)
 
 }
 
-void edgeDetection(vector<vector<Pixel> >& image)
+void edgeDetection(vector<vector<Pixel> >& image, char userFilename[])
 {
 	// define variables
 	int h = image.size();
@@ -219,11 +232,17 @@ void edgeDetection(vector<vector<Pixel> >& image)
 
 	// open file for filtered image data
 
-	// prompt user for filename
-	cout << "enter filename for filtered image:" << endl;
-	cin >> outFilename;
+	// generate output filename for processed image
+	strcpy(outFilename, userFilename);
+	
+	// handle filename containing a file extension
+	if (strchr(outFilename, '.') != NULL)
+	{
+		char* loc = strchr(outFilename, '.');
+		*loc = '\0';		// '\0' determines length of string in C
+	}
 
-	// add suffix and file extension
+		// add suffix and file extension
 	strcat(outFilename, "P3_ed.ppm");
 
 	// try to open the file
@@ -232,7 +251,6 @@ void edgeDetection(vector<vector<Pixel> >& image)
 			throw runtime_error("Could not create file!");
 		}
 		out.open(outFilename);
-		out2.open("vertical.ppm");
 	}
 	// handle the exception
 	catch (exception e) {
@@ -462,9 +480,9 @@ void readHeader(ifstream& fin, ofstream& fout, int imageInfo[])
 				switch (infoCount) {
 				case 1: cout << "a width of " << imageInfo[infoCount - 1] << " has been read " << endl;
 					break;
-				case 2: cout << " a height of " << imageInfo[infoCount - 1] << " has bene read " << endl;
+				case 2: cout << " a height of " << imageInfo[infoCount - 1] << " has been read " << endl;
 					break;
-				case 3: cout << "maxcolor of " << imageInfo[infoCount - 1] << " has been read " << endl;
+				case 3: cout << "maxcolor of " << imageInfo[infoCount - 1] << " has been read \n" << endl;
 					break;
 				}
 			}

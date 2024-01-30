@@ -19,25 +19,32 @@ using namespace std;
 int main()
 {
 	// Declerations
-	ifstream fin;	// Input file
-	ofstream fout;	// Output file
-	char inputFilename[MAXLEN];	
+	ifstream fin;	// Input filestream
+	ofstream fout;	// Output filestream
+	char inputFilename[MAXLEN];
+	char userFilename[MAXLEN];
 	int Info[3];
 	vector<vector<Pixel>> image;	// Pixel data of input image
 
-
+	// greeting
+	cout << "Hello! Welcome to the image filtering program!\n";
+	cout << "Follow the instructions and enjoy!\n\n";
 
 	// Open input and output streams and apply sharpen filter
 	openIOFiles(fin, fout, inputFilename);		
 	convertP6ToP3(fin, fout, image, Info);
-
-	// Close input and output streams
+	
+	// close input and output streams
 	closeIOFiles(fin, fout);
 
-	// Apply filters to image
-	sharpen(image);
-	smooth(image);
-	edgeDetection(image);
+	// prompt user for output filename
+	cout << "Please enter your output filename without file extension : ";
+	cin >> userFilename;
+
+	// apply filters to image
+	sharpen(image, userFilename);
+	smooth(image, userFilename);
+	edgeDetection(image, userFilename);
 
 	
 	/*
