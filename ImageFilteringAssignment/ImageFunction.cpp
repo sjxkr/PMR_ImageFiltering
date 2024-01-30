@@ -154,6 +154,7 @@ void smooth(vector<vector<Pixel> >& image, char userFilename[])
 	ofstream out;
 	char outFilename[MAXLEN];
 	char comment[MAXLEN] = "# Smooth filter has been applied this image";
+	int r = 0, g = 0, b = 0;
 	int maxColor = 0; // change this to be read from header, imageinfo variable.
 	Pixel sum;
 	vector<vector<Pixel>> imageOut = image;		// output image intialised as input image
@@ -206,6 +207,15 @@ void smooth(vector<vector<Pixel> >& image, char userFilename[])
 				
 				// reset pixel
 				sum.reset();
+
+				// get max colour value
+				r = imageOut[i][j].getRed();
+				g = imageOut[i][j].getGreen();
+				b = imageOut[i][j].getBlue();
+
+				if (r > maxColor) { maxColor = r; }
+				if (g > maxColor) { maxColor = g; }
+				if (b > maxColor) { maxColor = b; }
 			}	
 		}
 	
@@ -224,7 +234,7 @@ void edgeDetection(vector<vector<Pixel> >& image, char userFilename[])
 	int w = image[0].size();
 	ofstream out, out2;
 	char outFilename[MAXLEN];
-	char comment[MAXLEN] = "# Edge detection has been applied this image";
+	char comment[MAXLEN] = "# Edge detection filter has been applied this image";
 	int r = 0, g = 0, b = 0;
 	int maxColor = 0; // change this to be read from header, imageinfo variable.
 	vector<vector<Pixel>> hDeriv = image, vDeriv = image;	// output derivatives of each kernel 
@@ -339,24 +349,6 @@ void edgeDetection(vector<vector<Pixel> >& image, char userFilename[])
 	// write image data to file
 	writeP3Image(out, imageOut, comment, maxColor);
 
-}
-
-bool pixelEdgeRowColCheck(vector<vector<Pixel>>& image, int i, int j)
-{
-	// check if pixel is in first or last row or column
-	// define input variables
-	bool edge = false;
-	int h = image.size();
-	int w = image[0].size();
-
-	if ((i == 0 || i == h-1) || (j == 0 || j == w-1))
-	{
-		edge = true;
-		return(edge);
-	}
-
-	edge = false;
-	return(edge);
 }
 
 void writeP3Image(ofstream& out, vector<vector<Pixel> >& image, char comment[], int maxColor)
@@ -532,27 +524,5 @@ void writeHeader(ofstream& fout, char magicNumber[], char comment[], int w, int 
 	fout << magicNumber << newline;
 	fout << comment << newline;
 	fout << w << ' ' << h << ' ' << maxPixelVal << newline;
-}
-
-void testOverflow()
-{
-	// define variables
-	Pixel Pixel;
-	int r, g, b;
-
-	// set test pixel values
-	r = -1000;
-	g = 255;
-	b = -1;
-
-	// set pixel value
-	Pixel.setPixel(r, g, b);
-
-	// reset pixel
-	if (Pixel.overflow()) { Pixel.reset(); }
-
-	// print new pixel
-	cout << Pixel << "\n";
-
 }
 

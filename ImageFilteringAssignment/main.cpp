@@ -49,6 +49,9 @@ int main()
 	smooth(image, userFilename);
 	edgeDetection(image, userFilename);
 
+	// program status update
+	cout << "\nImage processing complete!\n";
+
 	
 	/*
 	writeHeader;

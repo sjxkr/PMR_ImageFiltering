@@ -24,8 +24,6 @@ void writeP3Image(ofstream& out, vector<vector<Pixel> >& image, char comment[], 
 void readAndWriteImageData(ifstream& fin, ofstream& fout, vector<vector<Pixel> >& image, int w, int h);
 void readHeader(ifstream& fin, ofstream& fout, int imageInfo[]);
 void writeHeader(ofstream& fout, char magicNumber[], char comment[], int w, int h, int maxPixelVal);
-bool pixelEdgeRowColCheck(vector<vector<Pixel>>& image, int i, int j);
-void testOverflow();
 
 
 
