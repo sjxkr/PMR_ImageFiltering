@@ -519,9 +519,9 @@ void testOverflow()
 	int r, g, b;
 
 	// set test pixel values
-	r = -10;
-	g = 2000;
-	b = -200;
+	r = -1000;
+	g = 255;
+	b = -1;
 
 	// set pixel value
 	Pixel.setPixel(r, g, b);
