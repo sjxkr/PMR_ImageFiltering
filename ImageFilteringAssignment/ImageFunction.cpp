@@ -1,4 +1,6 @@
 #include "ImageFunctions.h"
+#include <bitset>
+#include <cmath>
 
 void openIOFiles(ifstream& fin, ofstream& fout, char inputFilename[])
 {
@@ -50,7 +52,7 @@ void convertP6ToP3(ifstream& bin, ofstream& out, vector<vector<Pixel> >& image, 
 }
 
 
-void smooth(vector<vector<Pixel> >& image)
+void sharpen(vector<vector<Pixel> >& image)
 {
 
 	// define variables
@@ -58,8 +60,88 @@ void smooth(vector<vector<Pixel> >& image)
 	int w = image[0].size();
 	ofstream out;
 	char outFilename[MAXLEN];
+	char comment[MAXLEN] = "# Sharpen filter has been applied this image";
+	int r = 0, g = 0, b = 0;
+	int maxColor = 0; // change this to be read from header, imageinfo variable.
+	vector<vector<Pixel>> imageOut = image;		// output image intialised as input image
+
+	// initialise convolution kernel
+	vector<vector<int>> filter{
+		{-1, -1, -1},
+		{-1, 12, -1},
+		{-1, -1, -1}
+	};
+
+	// open file for filtered image data
+
+	// prompt user for filename
+	cout << "enter filename for filtered image:" << endl;
+	cin >> outFilename;
+
+	// add suffix and file extension
+	strcat(outFilename, "P3_sh.ppm");
+
+	// try to open the file
+	try {
+		if (!out) {
+			throw runtime_error("Could not create file!");
+		}
+		out.open(outFilename);
+	}
+	// handle the exception
+	catch (exception e) {
+		cout << "Error opening out file" << endl;
+	}
+
+	// apply sharpen filter to inner pixels
+	for (int i = 1; i < h - 1; i++)
+		for (int j = 1; j < w - 1; j++)
+		{
+			// local variables
+			int redSumProduct = 0, greenSumProduct = 0, blueSumProduct = 0;
+
+			// pass kernel over pixels
+			for (int k = -1; k < 2; k++)
+				for (int l = -1; l < 2; l++)
+				{
+					// compute rgb sum product
+					redSumProduct += image[i + k][j + l].getRed() * filter[k + 1][l + 1];
+					greenSumProduct += image[i + k][j + l].getGreen() * filter[k + 1][l + 1];
+					blueSumProduct += image[i + k][j + l].getBlue() * filter[k + 1][l + 1];
+				}
+
+			// set new pixel rgb value
+			imageOut[i][j].setPixel(redSumProduct, greenSumProduct, blueSumProduct);
+
+			// deal with overflow condition
+			if (imageOut[i][j].overflow()) { imageOut[i][j].reset(); }
+
+			// get max colour value
+			r = imageOut[i][j].getRed();
+			g = imageOut[i][j].getGreen();
+			b = imageOut[i][j].getBlue();
+
+			if (r > maxColor) { maxColor = r; }
+			if (g > maxColor) { maxColor = g; }
+			if (b > maxColor) { maxColor = b; }
+		}
+
+	// write image data to file
+	writeP3Image(out, imageOut, comment, maxColor);
+
+}
+
+void smooth(vector<vector<Pixel> >& image)
+{
+	// define variables
+	int h = image.size();
+	int w = image[0].size();
+	ofstream out;
+	char outFilename[MAXLEN];
 	char comment[MAXLEN] = "# Smooth filter has been applied this image";
-	int maxColor = 255;
+	int maxColor = 0; // change this to be read from header, imageinfo variable.
+	Pixel sum;
+	vector<vector<Pixel>> imageOut = image;		// output image intialised as input image
 
 	// open file for filtered image data
 
@@ -72,55 +154,158 @@ void smooth(vector<vector<Pixel> >& image)
 
 	// try to open the file
 	try {
+		if (!out) {
+			throw runtime_error("Could not create file!");
+		}
 		out.open(outFilename);
 	}
+	// handle the exception
 	catch (exception e) {
-		cout << "Error opening file" << endl;
+		cout << "Error opening out file" << endl;
 	}
 
-	// apply smoothing filter
+	// compute average value of neighbouring pixels
 	for (int i = 1; i < h - 1; i++)
 		for (int j = 1; j < w - 1; j++)
 		{
-			if (!pixelEdgeRowColCheck(image, i, j))
+			sum = image[i + 1][j] + image[i - 1][j] + image[i][j + 1] + image[i][j - 1];	// sum weighted pixel values
+			sum = sum / 4;	// calculate average
+
+			// Set new pixel value is overflow = false
+			if (!sum.overflow()) {
+				imageOut[i][j] = sum;
+			}
+			else
 			{
-				// run this on eligible pixels
-				image[i][j].setPixel(255, 255, 255);	//make all inner pixels white
-			}			
+				// print message
+				cout << "Overflow detected at pixel index " << "[" << i << "]" << "[" << j << "]" << endl;
+				
+				// reset pixel
+				sum.reset();
+			}	
 		}
-
-
+	
 	// write image data to file
-	writeP3Image(out, image, comment, maxColor);
-
-
-	// sum pixel values
-	Pixel sum;
-	for (int i=1; i<h-1; i++)
-		for (int j = 1; j < w - 1; j++)
-		{
-			sum = image[i + 1][j] + image[i - 1][j] + image[i][j + 1] + image[i][j - 1];
-			sum = sum / 4;
-			image[i][j] = sum;
-		}
-}
-
-void sharpen(vector<vector<Pixel> >& image)
-{
-	/* Enter Code Here */
+	writeP3Image(out, imageOut, comment, maxColor);
 
 }
 
 void edgeDetection(vector<vector<Pixel> >& image)
 {
-	/* Enter Code Here*/
+	// define variables
+	int h = image.size();
+	int w = image[0].size();
+	ofstream out, out2;
+	char outFilename[MAXLEN];
+	char comment[MAXLEN] = "# Edge detection has been applied this image";
+	int r = 0, g = 0, b = 0;
+	int maxColor = 0; // change this to be read from header, imageinfo variable.
+	vector<vector<Pixel>> hDeriv = image, vDeriv = image;	// output derivatives of each kernel 
+	vector<vector<Pixel>> imageOut = image;		// output image intialised as input image
+
+	// initialise horizontal convolution kernel
+	vector<vector<int>> hFilter{
+		{ 1,  0, -1},
+		{ 2,  0, -2},
+		{ 1,  0, -1}
+	};
+
+	// initialise vertical convolution kernel
+	vector<vector<int>> vFilter{
+		{ 1,  2,  1},
+		{ 0,  0,  0},
+		{-1,  2, -1}
+	};
+
+	// open file for filtered image data
+
+	// prompt user for filename
+	cout << "enter filename for filtered image:" << endl;
+	cin >> outFilename;
+
+	// add suffix and file extension
+	strcat(outFilename, "P3_ed.ppm");
+
+	// try to open the file
+	try {
+		if (!out) {
+			throw runtime_error("Could not create file!");
+		}
+		out.open(outFilename);
+		out2.open("vertical.ppm");
+	}
+	// handle the exception
+	catch (exception e) {
+		cout << "Error opening out file" << endl;
+	}
+
+	// apply filter to inner pixels
+	for (int i = 1; i < h - 1; i++)
+		for (int j = 1; j < w - 1; j++)
+		{
+			// local variables
+			int redSumProductH = 0, greenSumProductH = 0, blueSumProductH = 0;
+			int redSumProductV = 0, greenSumProductV = 0, blueSumProductV = 0;
+			int redValue = 0, grnValue = 0, bluValue = 0;
+
+			// pass kernel over pixels
+			for (int k = -1; k < 2; k++)
+				for (int l = -1; l < 2; l++)
+				{
+					// pass horizontal kernel over image
+					redSumProductH += image[i + k][j + l].getRed() * hFilter[k + 1][l + 1];
+					greenSumProductH += image[i + k][j + l].getGreen() * hFilter[k + 1][l + 1];
+					blueSumProductH += image[i + k][j + l].getBlue() * hFilter[k + 1][l + 1];
+
+					// pass vertical kernel over image
+					redSumProductV += image[i + k][j + l].getRed() * vFilter[k + 1][l + 1];
+					greenSumProductV += image[i + k][j + l].getGreen() * vFilter[k + 1][l + 1];
+					blueSumProductV += image[i + k][j + l].getBlue() * vFilter[k + 1][l + 1];
+
+				}
+
+			// set new pixel rgb value
+			hDeriv[i][j].setPixel(redSumProductH, greenSumProductH, blueSumProductH);
+
+			// set new pixel rgb value
+			vDeriv[i][j].setPixel(redSumProductV, greenSumProductV, blueSumProductV);
+
+
+			// deal with overflow/underflow condition in horizontal derivative
+			if (hDeriv[i][j].overflow()) { hDeriv[i][j].reset(); }
+
+			// deal with overflow/underflow condition in vertical derivative
+			if (vDeriv[i][j].overflow()) { vDeriv[i][j].reset(); }
+
+			// combine the two derivatives
+			redValue = lrint(sqrt(pow(hDeriv[i][j].getRed(),2) + pow(vDeriv[i][j].getRed(),2)));
+			grnValue = lrint(sqrt(pow(hDeriv[i][j].getGreen(),2) + pow(vDeriv[i][j].getGreen(),2)));
+			bluValue = lrint(sqrt(pow(hDeriv[i][j].getBlue(),2) + pow(vDeriv[i][j].getBlue(),2)));
+
+			// set combined pixel value
+			imageOut[i][j].setPixel(redValue, grnValue, bluValue);
+
+			// deal with overflow/underflow
+			if (imageOut[i][j].overflow()) { imageOut[i][j].reset(); };
+
+			// get max colour value
+			r = imageOut[i][j].getRed();
+			g = imageOut[i][j].getGreen();
+			b = imageOut[i][j].getBlue();
+
+			if (r > maxColor) { maxColor = r; }
+			if (g > maxColor) { maxColor = g; }
+			if (b > maxColor) { maxColor = b; }
+		}
+
+	// write image data to file
+	writeP3Image(out, imageOut, comment, maxColor);
 
 }
 
 bool pixelEdgeRowColCheck(vector<vector<Pixel>>& image, int i, int j)
 {
 	// check if pixel is in first or last row or column
-
 	// define input variables
 	bool edge = false;
 	int h = image.size();
@@ -150,7 +335,7 @@ void writeP3Image(ofstream& out, vector<vector<Pixel> >& image, char comment[], 
 		{
 			out << image[i][j];
 			++pCount;
-			if (pCount == 10) {
+			if (pCount == w) {
 				out << newline;
 				pCount = 0;
 			}
@@ -309,5 +494,27 @@ void writeHeader(ofstream& fout, char magicNumber[], char comment[], int w, int 
 	fout << magicNumber << newline;
 	fout << comment << newline;
 	fout << w << ' ' << h << ' ' << maxPixelVal << newline;
+}
+
+void testOverflow()
+{
+	// define variables
+	Pixel Pixel;
+	int r, g, b;
+
+	// set test pixel values
+	r = -1000;
+	g = 255;
+	b = -1;
+
+	// set pixel value
+	Pixel.setPixel(r, g, b);
+
+	// reset pixel
+	if (Pixel.overflow()) { Pixel.reset(); }
+
+	// print new pixel
+	cout << Pixel << "\n";
+
 }
 

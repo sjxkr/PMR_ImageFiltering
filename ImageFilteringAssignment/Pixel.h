@@ -12,10 +12,14 @@ class Pixel
   public:
 	// constants to enable undeflow/overflow detection in rgb values
 	static const unsigned int MAXVAL = 255;
+	static const unsigned int MINVAL = 4000000000;		// compilers interpretation of signed int32 into a unsigned = 2^32 - n. Negative pixel values are represented as very large positive integers. 
+	static const unsigned short RMINMASK = 32;
+	static const unsigned short GMINMASK = 16;
+	static const unsigned short BMINMASK = 8;
 	static const unsigned short RMASK = 4;
 	static const unsigned short GMASK = 2;
 	static const unsigned short BMASK = 1;
-	static const unsigned short CHECK = 7;
+	static const unsigned short CHECK = 255;
 
 	//Constructors 
 	Pixel(); //Default

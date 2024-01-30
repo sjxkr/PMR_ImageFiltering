@@ -25,6 +25,7 @@ void readAndWriteImageData(ifstream& fin, ofstream& fout, vector<vector<Pixel> >
 void readHeader(ifstream& fin, ofstream& fout, int imageInfo[]);
 void writeHeader(ofstream& fout, char magicNumber[], char comment[], int w, int h, int maxPixelVal);
 bool pixelEdgeRowColCheck(vector<vector<Pixel>>& image, int i, int j);
+void testOverflow();
 
 
 
