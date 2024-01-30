@@ -28,7 +28,7 @@ int main()
 
 	// greeting
 	cout << "Hello! Welcome to the image filtering program!\n";
-	cout << "Follow the instructions and enjoy!\n\n";
+	cout << "Follow the instructions and enjoy!\n";
 
 	// Open input and output streams and apply sharpen filter
 	openIOFiles(fin, fout, inputFilename);		
