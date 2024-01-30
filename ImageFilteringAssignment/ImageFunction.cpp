@@ -208,15 +208,16 @@ void smooth(vector<vector<Pixel> >& image, char userFilename[])
 				// reset pixel
 				sum.reset();
 
-				// get max colour value
-				r = imageOut[i][j].getRed();
-				g = imageOut[i][j].getGreen();
-				b = imageOut[i][j].getBlue();
+			}
 
-				if (r > maxColor) { maxColor = r; }
-				if (g > maxColor) { maxColor = g; }
-				if (b > maxColor) { maxColor = b; }
-			}	
+			// get max colour value
+			r = imageOut[i][j].getRed();
+			g = imageOut[i][j].getGreen();
+			b = imageOut[i][j].getBlue();
+
+			if (r > maxColor) { maxColor = r; }
+			if (g > maxColor) { maxColor = g; }
+			if (b > maxColor) { maxColor = b; }
 		}
 	
 	// print progress

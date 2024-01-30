@@ -52,17 +52,5 @@ int main()
 	// program status update
 	cout << "\nImage processing complete!\n";
 
-	
-	/*
-	writeHeader;
-	writeP3Image;
-	closeIOFiles(fin, fout);
-	openIOFiles(fin, fout, inputFilename);
-	edgeDetection(image);
-	writeHeader;
-	writeP3Image;
-	closeIOFiles(fin, fout);
-	*/
-
 	return(0);
 }
