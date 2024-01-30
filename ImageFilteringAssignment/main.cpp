@@ -41,6 +41,9 @@ int main()
 	cout << "Please enter your output filename without file extension : ";
 	cin >> userFilename;
 
+	// program status update
+	cout << "\nImage conversion complete.... Applying filters.... Please wait...\n\n";
+
 	// apply filters to image
 	sharpen(image, userFilename);
 	smooth(image, userFilename);

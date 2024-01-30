@@ -99,6 +99,9 @@ void sharpen(vector<vector<Pixel> >& image, char userFilename[])
 	catch (exception e) {
 		cout << "Error opening out file" << endl;
 	}
+	
+	// print progress
+	cout << "Applying sharpen filter to image...\n";
 
 	// apply sharpen filter to inner pixels
 	for (int i = 1; i < h - 1; i++)
@@ -128,10 +131,15 @@ void sharpen(vector<vector<Pixel> >& image, char userFilename[])
 			g = imageOut[i][j].getGreen();
 			b = imageOut[i][j].getBlue();
 
+			// set max colour
 			if (r > maxColor) { maxColor = r; }
 			if (g > maxColor) { maxColor = g; }
 			if (b > maxColor) { maxColor = b; }
+
 		}
+
+	// print progress
+	cout << "Writing sharpened image to file....Please wait....\n";
 
 	// write image data to file
 	writeP3Image(out, imageOut, comment, maxColor);
@@ -177,6 +185,9 @@ void smooth(vector<vector<Pixel> >& image, char userFilename[])
 		cout << "Error opening out file" << endl;
 	}
 
+	// print progress
+	cout << "Applying smooth filter to image....\n";
+
 	// compute average value of neighbouring pixels
 	for (int i = 1; i < h - 1; i++)
 		for (int j = 1; j < w - 1; j++)
@@ -198,6 +209,9 @@ void smooth(vector<vector<Pixel> >& image, char userFilename[])
 			}	
 		}
 	
+	// print progress
+	cout << "Writing smoothed image to file...Please wait....\n";
+
 	// write image data to file
 	writeP3Image(out, imageOut, comment, maxColor);
 
@@ -257,6 +271,9 @@ void edgeDetection(vector<vector<Pixel> >& image, char userFilename[])
 		cout << "Error opening out file" << endl;
 	}
 
+	// print progress
+	cout << "Applying edge detection filter to image....\n";
+
 	// apply filter to inner pixels
 	for (int i = 1; i < h - 1; i++)
 		for (int j = 1; j < w - 1; j++)
@@ -315,6 +332,9 @@ void edgeDetection(vector<vector<Pixel> >& image, char userFilename[])
 			if (g > maxColor) { maxColor = g; }
 			if (b > maxColor) { maxColor = b; }
 		}
+
+	// print progress
+	cout << "Writing edge detection filtered image to file....Please wait...\n";
 
 	// write image data to file
 	writeP3Image(out, imageOut, comment, maxColor);
