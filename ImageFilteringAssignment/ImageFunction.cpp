@@ -196,19 +196,8 @@ void smooth(vector<vector<Pixel> >& image, char userFilename[])
 			sum = image[i + 1][j] + image[i - 1][j] + image[i][j + 1] + image[i][j - 1];	// sum weighted pixel values
 			sum = sum / 4;	// calculate average
 
-			// Set new pixel value is overflow = false
-			if (!sum.overflow()) {
-				imageOut[i][j] = sum;
-			}
-			else
-			{
-				// print message
-				cout << "Overflow detected at pixel index " << "[" << i << "]" << "[" << j << "]" << endl;
-				
-				// reset pixel
-				sum.reset();
-
-			}
+			// set pixel value
+			imageOut[i][j] = sum;
 
 			// get max colour value
 			r = imageOut[i][j].getRed();
