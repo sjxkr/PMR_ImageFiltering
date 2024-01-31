@@ -8,7 +8,7 @@ void openIOFiles(ifstream& fin, ofstream& fout, char inputFilename[])
 	char outputFilename[MAXLEN];
 
 	// prompt user for input file
-	cout << "enter filename ";
+	cout << "Enter filename of input binary image including file extension : ";
 	cin >> inputFilename;
 
 	// open .ppm binary file for input
@@ -52,7 +52,7 @@ void convertP6ToP3(ifstream& bin, ofstream& out, vector<vector<Pixel> >& image, 
 }
 
 
-void sharpen(vector<vector<Pixel> >& image)
+void sharpen(vector<vector<Pixel> >& image, char userFilename[])
 {
 
 	// define variables
@@ -74,9 +74,16 @@ void sharpen(vector<vector<Pixel> >& image)
 
 	// open file for filtered image data
 
-	// prompt user for filename
-	cout << "enter filename for filtered image:" << endl;
-	cin >> outFilename;
+	// generate output filename for processed image
+	strcpy(outFilename, userFilename);
+
+	// handle filename containing a file extension
+	if (strchr(outFilename, '.')!=NULL)
+	{
+		char* loc = strchr(outFilename, '.');
+		*loc = '\0';		// '\0' determines length of string in C
+	}
+
 
 	// add suffix and file extension
 	strcat(outFilename, "P3_sh.ppm");
@@ -92,6 +99,9 @@ void sharpen(vector<vector<Pixel> >& image)
 	catch (exception e) {
 		cout << "Error opening out file" << endl;
 	}
+	
+	// print progress
+	cout << "Applying sharpen filter to image...\n";
 
 	// apply sharpen filter to inner pixels
 	for (int i = 1; i < h - 1; i++)
@@ -121,17 +131,22 @@ void sharpen(vector<vector<Pixel> >& image)
 			g = imageOut[i][j].getGreen();
 			b = imageOut[i][j].getBlue();
 
+			// set max colour
 			if (r > maxColor) { maxColor = r; }
 			if (g > maxColor) { maxColor = g; }
 			if (b > maxColor) { maxColor = b; }
+
 		}
+
+	// print progress
+	cout << "Writing sharpened image to file....Please wait....\n";
 
 	// write image data to file
 	writeP3Image(out, imageOut, comment, maxColor);
 
 }
 
-void smooth(vector<vector<Pixel> >& image)
+void smooth(vector<vector<Pixel> >& image, char userFilename[])
 {
 	// define variables
 	int h = image.size();
@@ -139,15 +154,22 @@ void smooth(vector<vector<Pixel> >& image)
 	ofstream out;
 	char outFilename[MAXLEN];
 	char comment[MAXLEN] = "# Smooth filter has been applied this image";
+	int r = 0, g = 0, b = 0;
 	int maxColor = 0; // change this to be read from header, imageinfo variable.
 	Pixel sum;
 	vector<vector<Pixel>> imageOut = image;		// output image intialised as input image
 
 	// open file for filtered image data
 
-	// prompt user for filename
-	cout << "enter filename for filtered image:" << endl;
-	cin >> outFilename;
+	// generate output filename for processed image
+	strcpy(outFilename, userFilename);
+
+	// handle filename containing a file extension
+	if (strchr(outFilename, '.') != NULL)
+	{
+		char* loc = strchr(outFilename, '.');
+		*loc = '\0';		// '\0' determines length of string in C
+	}
 
 	// add suffix and file extension
 	strcat(outFilename, "P3_sm.ppm");
@@ -163,6 +185,9 @@ void smooth(vector<vector<Pixel> >& image)
 	catch (exception e) {
 		cout << "Error opening out file" << endl;
 	}
+
+	// print progress
+	cout << "Applying smooth filter to image....\n";
 
 	// compute average value of neighbouring pixels
 	for (int i = 1; i < h - 1; i++)
@@ -182,22 +207,35 @@ void smooth(vector<vector<Pixel> >& image)
 				
 				// reset pixel
 				sum.reset();
-			}	
+
+			}
+
+			// get max colour value
+			r = imageOut[i][j].getRed();
+			g = imageOut[i][j].getGreen();
+			b = imageOut[i][j].getBlue();
+
+			if (r > maxColor) { maxColor = r; }
+			if (g > maxColor) { maxColor = g; }
+			if (b > maxColor) { maxColor = b; }
 		}
 	
+	// print progress
+	cout << "Writing smoothed image to file...Please wait....\n";
+
 	// write image data to file
 	writeP3Image(out, imageOut, comment, maxColor);
 
 }
 
-void edgeDetection(vector<vector<Pixel> >& image)
+void edgeDetection(vector<vector<Pixel> >& image, char userFilename[])
 {
 	// define variables
 	int h = image.size();
 	int w = image[0].size();
 	ofstream out, out2;
 	char outFilename[MAXLEN];
-	char comment[MAXLEN] = "# Edge detection has been applied this image";
+	char comment[MAXLEN] = "# Edge detection filter has been applied this image";
 	int r = 0, g = 0, b = 0;
 	int maxColor = 0; // change this to be read from header, imageinfo variable.
 	vector<vector<Pixel>> hDeriv = image, vDeriv = image;	// output derivatives of each kernel 
@@ -219,11 +257,17 @@ void edgeDetection(vector<vector<Pixel> >& image)
 
 	// open file for filtered image data
 
-	// prompt user for filename
-	cout << "enter filename for filtered image:" << endl;
-	cin >> outFilename;
+	// generate output filename for processed image
+	strcpy(outFilename, userFilename);
+	
+	// handle filename containing a file extension
+	if (strchr(outFilename, '.') != NULL)
+	{
+		char* loc = strchr(outFilename, '.');
+		*loc = '\0';		// '\0' determines length of string in C
+	}
 
-	// add suffix and file extension
+		// add suffix and file extension
 	strcat(outFilename, "P3_ed.ppm");
 
 	// try to open the file
@@ -232,12 +276,14 @@ void edgeDetection(vector<vector<Pixel> >& image)
 			throw runtime_error("Could not create file!");
 		}
 		out.open(outFilename);
-		out2.open("vertical.ppm");
 	}
 	// handle the exception
 	catch (exception e) {
 		cout << "Error opening out file" << endl;
 	}
+
+	// print progress
+	cout << "Applying edge detection filter to image....\n";
 
 	// apply filter to inner pixels
 	for (int i = 1; i < h - 1; i++)
@@ -298,27 +344,12 @@ void edgeDetection(vector<vector<Pixel> >& image)
 			if (b > maxColor) { maxColor = b; }
 		}
 
+	// print progress
+	cout << "Writing edge detection filtered image to file....Please wait...\n";
+
 	// write image data to file
 	writeP3Image(out, imageOut, comment, maxColor);
 
-}
-
-bool pixelEdgeRowColCheck(vector<vector<Pixel>>& image, int i, int j)
-{
-	// check if pixel is in first or last row or column
-	// define input variables
-	bool edge = false;
-	int h = image.size();
-	int w = image[0].size();
-
-	if ((i == 0 || i == h-1) || (j == 0 || j == w-1))
-	{
-		edge = true;
-		return(edge);
-	}
-
-	edge = false;
-	return(edge);
 }
 
 void writeP3Image(ofstream& out, vector<vector<Pixel> >& image, char comment[], int maxColor)
@@ -462,9 +493,9 @@ void readHeader(ifstream& fin, ofstream& fout, int imageInfo[])
 				switch (infoCount) {
 				case 1: cout << "a width of " << imageInfo[infoCount - 1] << " has been read " << endl;
 					break;
-				case 2: cout << " a height of " << imageInfo[infoCount - 1] << " has bene read " << endl;
+				case 2: cout << " a height of " << imageInfo[infoCount - 1] << " has been read " << endl;
 					break;
-				case 3: cout << "maxcolor of " << imageInfo[infoCount - 1] << " has been read " << endl;
+				case 3: cout << "maxcolor of " << imageInfo[infoCount - 1] << " has been read \n" << endl;
 					break;
 				}
 			}
@@ -494,27 +525,5 @@ void writeHeader(ofstream& fout, char magicNumber[], char comment[], int w, int 
 	fout << magicNumber << newline;
 	fout << comment << newline;
 	fout << w << ' ' << h << ' ' << maxPixelVal << newline;
-}
-
-void testOverflow()
-{
-	// define variables
-	Pixel Pixel;
-	int r, g, b;
-
-	// set test pixel values
-	r = -1000;
-	g = 255;
-	b = -1;
-
-	// set pixel value
-	Pixel.setPixel(r, g, b);
-
-	// reset pixel
-	if (Pixel.overflow()) { Pixel.reset(); }
-
-	// print new pixel
-	cout << Pixel << "\n";
-
 }
 
