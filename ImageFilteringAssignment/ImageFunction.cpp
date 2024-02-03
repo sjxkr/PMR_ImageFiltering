@@ -241,7 +241,7 @@ void edgeDetection(vector<vector<Pixel> >& image, char userFilename[])
 	vector<vector<int>> vFilter{
 		{ 1,  2,  1},
 		{ 0,  0,  0},
-		{-1,  2, -1}
+		{-1,  -2, -1}
 	};
 
 	// open file for filtered image data
