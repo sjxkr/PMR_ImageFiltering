@@ -487,6 +487,8 @@ void readHeader(ifstream& fin, ofstream& fout, int imageInfo[])
 				case 3: cout << "maxcolor of " << imageInfo[infoCount - 1] << " has been read \n" << endl;
 					break;
 				}
+
+
 			}
 			else if (infoCount < 3) {
 				// aNumber has 0 digits and infoCount < 3
@@ -495,6 +497,15 @@ void readHeader(ifstream& fin, ofstream& fout, int imageInfo[])
 				strcpy(bData, " ");
 				bIndex = 0;
 				fin.getline(bData, MAXLEN);
+			}
+
+			// Handle attempts to open very large images
+			if (imageInfo[0] > 3840 || imageInfo[1] > 2160)
+			{
+				// print warning and exit program
+				cout << "ERROR : Image exceeds size limits (3840x2160)\n";
+				cout << "Program will terminate\n";
+				exit(EXIT_FAILURE);
 			}
 		}
 	} while (infoCount < 3 && !fin.eof());
